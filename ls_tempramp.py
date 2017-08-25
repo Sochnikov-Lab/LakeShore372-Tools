@@ -11,12 +11,11 @@ class LakeShore372(object):
     #Initialization: create necessary variables and configurable serial instance
     def __init__(self):
         self.ID = ''         #ID of instrument
-        self.ready = False   #If device is ready for command
         self.ser = serial.Serial() #Serial Instance
         self.ser.timeout = 0.25 #read timeout --Should fix this to get rid of latency
         self.serIO = io.TextIOWrapper(io.BufferedRWPair(self.ser,self.ser),newline='\r\n')
     #Attempts to open serial instance
-    def open(self,COMPORT,BAUDRATE=115200,verbose=0):
+    def open(self,COMPORT,BAUDRATE=115200):
         try:
             self.ser.port = COMPORT
             self.ser.baudrate = BAUDRATE
@@ -61,36 +60,36 @@ class LakeShore372(object):
 class LakeShore372Data(object):
     def __init__(self,DataFile):
         #Lists of Resistances / Temperatures
-        self.ThermoR = []
-        self.ThermoK = []
-        self.ControlR = []
-        self.StressR = []
+        self.MCThermoR = []
+        self.MCThermoK = []
+        self.Sample1R = []
+        self.Sample2R = []
         #Last Read Value:
-        self.ThermoRL = 0.0
-        self.ThermoKL = 0.0
-        self.ControlRL = 0.0
-        self.StressRL = 0.0
+        self.MCThermoRL = 0.0
+        self.MCThermoKL = 0.0
+        self.Sample1RL = 0.0
+        self.Sample2RL = 0.0
         #CSV file
         self.DataFile = DataFile
         #Write Header:
-        self.DataFile.write("TTemp,TResist,CResist,SResist\n")
+        self.DataFile.write("MCTemp,MCResist,1Resistance,2Resistance\n")
 
 
 
-    def AppendThermoR(self,RReading):
-        self.ThermoRL = RReading
-        self.ThermoR.append(RReading)
-    def AppendThermoK(self,KReading):
-        self.ThermoRK = RReading
-        self.ThermoK.append(KReading)
-    def AppendControlR(self,RReading):
-        self.ControlRL = RReading
-        self.ControlR.append(RReading)
-    def AppendStressR(self,RReading):
-        self.StressRL = RReading
-        self.StressR.append(RReading)
+    def AppendMCThermoR(self,RReading):
+        self.MCThermoRL = RReading
+        self.MCThermoR.append(RReading)
+    def AppendMCThermoK(self,KReading):
+        self.MCThermoRK = RReading
+        self.MCThermoK.append(KReading)
+    def AppendSample1R(self,RReading):
+        self.Sample1RL = RReading
+        self.Sample1R.append(RReading)
+    def AppendSample2R(self,RReading):
+        self.Sample2RL = RReading
+        self.Sample2R.append(RReading)
     def UpdateCSV(self):
-        self.DataFile.write(str(self.ThermoKL) + ',' +str(self.ThermoRL) + ',' +str(self.ControlRL) + ',' +str(self.StressRL) + '\n')
+        self.DataFile.write(str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + '\n')
     def UpdatePlot(self):
         print("muh plot")
 
@@ -108,28 +107,28 @@ serial_cfg = {
 #resistance: Ohms
 #maxCurrent: A
 #range: mA
-sh_cfg = {
-    "resistance":float(cfgparser.get('sampleheater','resistanceOhms')),
-    "maxcurrent":float(cfgparser.get('sampleheater','maxcurrentAmps')),
+sampleHeater = {
+    "resistance":float(cfgparser.get('sampleheater','resistance')),
+    "maxcurrent":float(cfgparser.get('sampleheater','maxcurrent')),
     "range":float(cfgparser.get('sampleheater','range')),
     "disp":int(cfgparser.get('sampleheater','disp')),
-    "initpc":float(cfgparser.get('sampleheater','initpc')),
-    "finalpc":float(cfgparser.get('sampleheater','finalpc')),
-    "stepsizepc":int(cfgparser.get('sampleheater','steps'))
+    "initpc":float(cfgparser.get('sampleheater','initpc'))/100.0,
+    "finalpc":float(cfgparser.get('sampleheater','finalpc'))/100.0,
+    "deltapc":float(cfgparser.get('sampleheater','deltapc'))/100.0
 }
 #Scanner Configuration
-scanner_cfg = {
-    "thermo":int(cfgparser.get('scanner','thermo_ch')),
-    "control":int(cfgparser.get('scanner','control_ch')),
-    "stress":int(cfgparser.get('scanner','stress_ch')),
-    "autoscan":int(cfgparser.get('scanner','autoscan'))
+scannerChannelMap = {
+    "mcthermometer":int(cfgparser.get('scannerch','mcthermometer')),
+    "sample1":int(cfgparser.get('scannerch','sample1')),
+    "sample2":int(cfgparser.get('scannerch','sample2')),
+    "autoscan":int(cfgparser.get('scannerch','autoscan'))
 }
 #Timing
-timing_cfg = {
-    "timeconst":float(cfgparser.get('timeconstants','t_therm')),
-    "thermal":float(cfgparser.get('timeconstants','t_const')),
-    "switch":float(cfgparser.get('timeconstants','t_switch')),
-    "settle":float(cfgparser.get('timeconstants','t_settle'))
+timeConstants = {
+    "t_therm":float(cfgparser.get('timeconstants','t_const')),
+    "t_switch":float(cfgparser.get('timeconstants','t_switch')),
+    "t_dwell":float(cfgparser.get('timeconstants','t_dwell')),
+    "t_settle":float(cfgparser.get('timeconstants','t_settle'))
 }
 
 
@@ -144,39 +143,39 @@ LSHDataFile = open(DataFileName,'w')
 LSHData = LakeShore372Data(LSHDataFile)
 
 #next, send one-time configuration over serial:
-LSH.SetSampleHeaterRange(sh_cfg["range"])
+LSH.SetSampleHeaterRange(sampleHeater["range"])
 
 
 ##Main Loop:
 i = 0 #step number
 
-while currentpc < sh_cfg["finalpc"]:
+while currentpc < sampleHeater["finalpc"]:
     #Set Current
-    currentpc = sh_cfg["initpc"] + ((i)**(1.0/2.0)) * sh_cfg["stepsizepc"]
+    currentpc = sampleHeater["initpc"] + ((i)**(1.0/2.0)) * sampleHeater["stepsizepc"]
     #Wait Thermalization
-    sleep(timing_cfg["thermal"])
+    sleep(timeConstants["t_therm"])
     #Wait (Other)
-    sleep(timing_cfg["timeconst"] + timing_cfg["switch"] + timing_cfg["settle"])
+    LSH.ScanTo(scannerChannelMap["mcthermometer"],scannerChannelMap["autoscan"])
+    sleep(timeConstants["t_switch"] + timeConstants["t_settle"])
     #Scan to Temp Probe, Read Temp Probe T/R
-    LSH.ScanTo(scanner_cfg["thermo"],scanner_cfg["autoscan"])
-    TempProbeT = LSH.ReadKelvin(scanner_cfg["thermo"])
-    sleep(timing_cfg["settle"])
-    TempProbeR = LSH.ReadResistance(scanner_cfg["thermo"])
+    TempProbeT = LSH.ReadKelvin(scannerChannelMap["mcthermometer"])
+    sleep(1.0)
+    TempProbeR = LSH.ReadResistance(scannerChannelMap["mcthermometer"])
     #Wait (Other)
-    sleep(timing_cfg["timeconst"] + timing_cfg["switch"] + timing_cfg["settle"])
-    #Scan to Control Sample, Read R
-    LSH.ScanTo(scanner_cfg["control"],scanner_cfg["autoscan"])
-    ControlR = LSH.ReadResistance(scanner_cfg["control"])
+    LSH.ScanTo(scannerChannelMap["Sample1"],scannerChannelMap["autoscan"])
+    sleep(timeConstants["t_switch"] + timeConstants["t_settle"])
+    #Scan to Sample1 Sample, Read R
+    Sample1R = LSH.ReadResistance(scannerChannelMap["Sample1"])
     #Wait (Other)
-    sleep(timing_cfg["timeconst"] + timing_cfg["switch"] + timing_cfg["settle"])
-    #Scan to Stressed Sample, Read R
-    LSH.ScanTo(scanner_cfg["stress"],scanner_cfg["autoscan"])
-    StressR = LSH.ReadResistance(scanner_cfg["stress"])
+    LSH.ScanTo(scannerChannelMap["Sample2"],scannerChannelMap["autoscan"])
+    sleep(timeConstants["t_switch"] + timeConstants["t_settle"])
+    #Scan to Sample2ed Sample, Read R
+    Sample2R = LSH.ReadResistance(scannerChannelMap["Sample2"])
     #Append values to lists:
-    LSHData.AppendThermoK(TempProbeT)
-    LSHData.AppendThermoR(TempProbeR)
-    LSHData.AppendControlR(ControlR)
-    LSHData.AppendStressR(StressR)
+    LSHData.AppendMCThermoK(TempProbeT)
+    LSHData.AppendMCThermoR(TempProbeR)
+    LSHData.AppendSample1R(Sample1R)
+    LSHData.AppendSample2R(Sample2R)
     #Update CSV file
     LSHData.UpdateCSV()
     #Update Plot
