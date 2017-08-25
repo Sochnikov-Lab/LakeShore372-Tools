@@ -117,7 +117,7 @@ sh_cfg = {
 }
 #Scanner Configuration
 scanner_cfg = {
-    "thermo":int(cfgparser.get('scanner','thermo_ch')
+    "thermo":int(cfgparser.get('scanner','thermo_ch'),
     "control":int(cfgparser.get('scanner','control_ch')),
     "stress":int(cfgparser.get('scanner','stress_ch')),
     "autoscan":int(cfgparser.get('scanner','autoscan'))
