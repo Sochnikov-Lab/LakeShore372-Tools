@@ -1,5 +1,6 @@
 import serial
 import io
+import time
 import numpy as np
 import pandas as pd
 from datetime import datetime
@@ -89,8 +90,9 @@ class LakeShore372Data(object):
         self.StressRL = RReading
         self.StressR.append(RReading)
     def UpdateCSV(self):
-        self.DataFile.write("")
-    #def ShowUpdatedPlot(self):
+        self.DataFile.write(str(self.ThermoKL) + ',' +str(self.ThermoRL) + ',' +str(self.ControlRL) + ',' +str(self.StressRL) + '\n')
+    def UpdatePlot(self):
+        print("muh plot")
 
 ###Script###
 
@@ -113,18 +115,18 @@ sh_cfg = {
     "disp":int(cfgparser.get('sampleheater','disp')),
     "initpc":float(cfgparser.get('sampleheater','initpc')),
     "finalpc":float(cfgparser.get('sampleheater','finalpc')),
-    "steps":int(cfgparser.get('sampleheater','steps'))
+    "stepsizepc":int(cfgparser.get('sampleheater','steps'))
 }
 #Scanner Configuration
 scanner_cfg = {
-    "thermo":int(cfgparser.get('scanner','thermo_ch'),
+    "thermo":int(cfgparser.get('scanner','thermo_ch')),
     "control":int(cfgparser.get('scanner','control_ch')),
     "stress":int(cfgparser.get('scanner','stress_ch')),
     "autoscan":int(cfgparser.get('scanner','autoscan'))
 }
 #Timing
 timing_cfg = {
-    "timeconst":float(cfgparser.get('timeconstants','t_therm'),
+    "timeconst":float(cfgparser.get('timeconstants','t_therm')),
     "thermal":float(cfgparser.get('timeconstants','t_const')),
     "switch":float(cfgparser.get('timeconstants','t_switch')),
     "settle":float(cfgparser.get('timeconstants','t_settle'))
@@ -138,33 +140,50 @@ LSH.open()
 FileDescription = raw_input("What should we call the file? ")
 DateStr = datetime.now().strftime('%Y%m%d%-H%M%S')
 DataFileName = DateStr + '_' + FileDescription + '.csv'
-
-file LSHDataFile = open(DataFileName,'w')
+LSHDataFile = open(DataFileName,'w')
 LSHData = LakeShore372Data(LSHDataFile)
 
+#next, send one-time configuration over serial:
+LSH.SetSampleHeaterRange(sh_cfg["range"])
+
+
 ##Main Loop:
+i = 0 #step number
 
-#Set Current
+while currentpc < sh_cfg["finalpc"]:
+    #Set Current
+    currentpc = sh_cfg["initpc"] + ((i)**(1.0/2.0)) * sh_cfg["stepsizepc"]
+    #Wait Thermalization
+    sleep(timing_cfg["thermal"])
+    #Wait (Other)
+    sleep(timing_cfg["timeconst"] + timing_cfg["switch"] + timing_cfg["settle"])
+    #Scan to Temp Probe, Read Temp Probe T/R
+    LSH.ScanTo(scanner_cfg["thermo"],scanner_cfg["autoscan"])
+    TempProbeT = LSH.ReadKelvin(scanner_cfg["thermo"])
+    sleep(timing_cfg["settle"])
+    TempProbeR = LSH.ReadResistance(scanner_cfg["thermo"])
+    #Wait (Other)
+    sleep(timing_cfg["timeconst"] + timing_cfg["switch"] + timing_cfg["settle"])
+    #Scan to Control Sample, Read R
+    LSH.ScanTo(scanner_cfg["control"],scanner_cfg["autoscan"])
+    ControlR = LSH.ReadResistance(scanner_cfg["control"])
+    #Wait (Other)
+    sleep(timing_cfg["timeconst"] + timing_cfg["switch"] + timing_cfg["settle"])
+    #Scan to Stressed Sample, Read R
+    LSH.ScanTo(scanner_cfg["stress"],scanner_cfg["autoscan"])
+    StressR = LSH.ReadResistance(scanner_cfg["stress"])
+    #Append values to lists:
+    LSHData.AppendThermoK(TempProbeT)
+    LSHData.AppendThermoR(TempProbeR)
+    LSHData.AppendControlR(ControlR)
+    LSHData.AppendStressR(StressR)
+    #Update CSV file
+    LSHData.UpdateCSV()
+    #Update Plot
+    LSHData.UpdatePlot()
+    ##Loop Back
+    i = i + 1
 
-#Wait Thermalization
-
-#Wait (Other)
-
-#Scan to Temp Probe, Read Temp Probe T/R
-
-#Wait (Other)
-
-#Scan to Control Sample, Read R
-
-#Wait (Other)
-
-#Scan to Stressed Sample, Read R
-
-#Update CSV file
-
-#Update Plot
-
-##Loop Back
 
 
 
