@@ -17,7 +17,7 @@ class LakeShore372(object):
         self.parser = ConfigParser()
 
     def getConfig(self,inifilename):
-        self.parser.read('config.ini')
+        self.parser.read(inifilename)
         self.serialcfg = {
             "port":str(self.parser.get('connection','serialport')),
             "baud":int(self.parser.get('connection','baudrate'))
