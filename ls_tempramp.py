@@ -16,7 +16,7 @@ class LakeShore372(object):
         self.serIO = io.TextIOWrapper(io.BufferedRWPair(self.ser,self.ser),newline='\r\n')
         self.parser = ConfigParser()
 
-    def getConfig(self,inifilename)
+    def getConfig(self,inifilename):
         self.parser.read('config.ini')
         self.serialcfg = {
             "port":str(self.parser.get('connection','serialport')),
@@ -150,8 +150,6 @@ class LakeShore372Data(object):
         self.DataFile = DataFile
         #Write Header:
         self.DataFile.write("MCTemp,MCResist,1Resistance,2Resistance\n")
-
-
 
     def AppendMCThermoR(self,RReading):
         self.MCThermoRL = RReading
