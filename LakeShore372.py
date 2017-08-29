@@ -235,7 +235,7 @@ while currentpc < LSHDev.sampleHeater["finalpc"]:
     #Wait Thermalization
     sleep(LSHDev.timeConstants["t_therm"])
 
-    for measurement in range(0,5):
+    for measurement in range(0,LSHDev.scanner["scannerpasses"]):
         #Wait (Other)
         LSH.ScanTo(LSHDev.mcthermometer)
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermometer["t_settle"])
