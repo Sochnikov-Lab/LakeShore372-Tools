@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 from configparser import ConfigParser
+#import matplotlib.pyplot as plt
 
 ###LakeShore AC/Resistance Bridge Class###
 class LakeShore372(object):
@@ -15,7 +16,6 @@ class LakeShore372(object):
         self.ser.timeout = 0.25 #read timeout --Should fix this to get rid of latency
         self.serIO = io.TextIOWrapper(io.BufferedRWPair(self.ser,self.ser),newline='\r\n')
         self.parser = ConfigParser()
-
     def getConfig(self,inifilename):
         self.parser.read(inifilename)
         self.serialcfg = {
@@ -105,14 +105,17 @@ class LakeShore372(object):
                 sleep(0.125)
         except serial.SerialException:
             print("**Failed to open serial port**")
-    def close(self,verbose=0):
+    #Closes serial port
+    def close(self):
         try:
             self.ser.close()
         except serial.SerialException:
             print("**Failed to close serial port**")
+    #Analog to INSET - Sets channel parameters / Enables channels
     def setCHParams(self,chdict,Enabled=1):
         self.serIO.write(unicode('INSET' + str(chdict["channel"]) + ',' + str(Enabled) + ',' + str(chdict["t_dwell"]) + ',' + str(chdict["t_pause"]) + ',' + str(chdict["curvenumber"]) + ',' + str(chdict["tempcoeff"]) + '\r'))
         self.serIO.flush()
+    #Analog to INTYPE - Sets excitation settings, and turns on if Enabled = 1
     def Excite(self,chdict,Enabled=1):
         if Enabled == 1:
             currentShunt = 0
@@ -120,17 +123,21 @@ class LakeShore372(object):
             currentShunt = 1
         self.serIO.write(unicode('INTYPE' + str(chdict["channel"]) + ',' + str(chdict["excitemode"]) + ',' + str(chdict["excitesetting"]) + ',' + str(chdict["autorange"]) + ',' + str(currentShunt) + ',' + str(chdict["units"]) + '\r'))
         self.serIO.flush()
+    #Analog to FILTER - Sets filter if Enabled = 1.
     def setFilterParams(self,chdict,Enabled=1):
         self.serIO.write(unicode('FILTER' + str(chdict[channel]) + ',' + str(Enabled) + ',' + str(chdict["t_settle"]) + ',' + str(chdict["filterwindow"]) + '\r'))
         self.serIO.flush()
+    #Analog to RDGST? - Returns status for given channel
     def ReadCHStatus(self,chdict):
         self.serIO.write(unicode('RDGST?' + str(chdict["channel"]) + '\r'))
         self.serIO.flush()
         return str(self.serIO.readline()).rstrip().lstrip()
+    #Analog to RDGR? - Returns resistance for given channel
     def ReadResistance(self,chdict):
         self.serIO.write(unicode('RDGR?' + str(chdict["channel"]) + '\r'))
         self.serIO.flush()
         return float(str(self.serIO.readline()).rstrip().lstrip())
+    #Analog to RDGK? - Returns kelvin temperature for given channel
     def ReadKelvin(self,chdict):
         self.serIO.write(unicode('RDGK?' + str(chdict["channel"]) + '\r'))
         self.serIO.flush()
@@ -146,20 +153,19 @@ class LakeShore372(object):
     def SetSampleHeaterRange(self,htrdict):
         self.serIO.write(unicode('RANGE0,' + str(htrdict["range"]) + '\r'))
         self.serIO.flush()
-class LakeShoreConfig(object):
-    def __init__(self,configfilename):
-        self.parser = ConfigParser()
 
 #Data Handler Class (Saves/Plots data)
 class LakeShore372Data(object):
     def __init__(self,DataFile):
         #Lists of timestamps / Heater percents / Resistances / Temperatures
+        self.timestamp = []
         self.htrpc = []
         self.MCThermoR = []
         self.MCThermoK = []
         self.Sample1R = []
         self.Sample2R = []
         #Last Read Value:
+        self.timesamp = ""
         self.htrpcL = 0.0
         self.MCThermoRL = 0.0
         self.MCThermoKL = 0.0
@@ -168,7 +174,7 @@ class LakeShore372Data(object):
         #CSV file
         self.DataFile = DataFile
         #Write Header:
-        self.DataFile.write("MCTemp,MCResist,1Resistance,2Resistance\n")
+        self.DataFile.write("heater%,MCTemp,MCResist,1Resistance,2Resistance\n")
 
     def AppendMCThermoR(self,RReading):
         self.MCThermoRL = RReading
