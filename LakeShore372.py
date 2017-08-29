@@ -36,9 +36,6 @@ class LakeShore372(object):
         }
         #Scanner cfg
         self.scanner = {
-            "mcthermometer":int(self.parser.get('scannerch','mcthermometer')),
-            "sample1":int(self.parser.get('scannerch','sample1')),
-            "sample2":int(self.parser.get('scannerch','sample2')),
             "autoscan":int(self.parser.get('scannerch','autoscan'))
         }
         #mixing chamber thermometer cfg
@@ -46,7 +43,7 @@ class LakeShore372(object):
             "channel":int(self.parser.get('mcthermometer','channel')),
             "curvenumber":int(self.parser.get('mcthermometer','curvenumber')),
             "tempcoeff":int(self.parser.get('mcthermometer','tempcoeff')),
-            "filterwindow":int(self.parser.get('mcthermometer','filterwindow'))
+            "filterwindow":int(self.parser.get('mcthermometer','filterwindow')),
             "t_dwell":float(self.parser.get('mcthermometer','t_dwell')),
             "t_pause":float(self.parser.get('mcthermometer','t_pause')),
             "t_settle":float(self.parser.get('mcthermometer','t_settle'))
@@ -56,7 +53,7 @@ class LakeShore372(object):
             "curvenumber":int(self.parser.get('sample1','curvenumber')),
             "tempcoeff":int(self.parser.get('sample1','tempcoeff')),
             "filterwindow":int(self.parser.get('sample1','filterwindow')),
-            "description":str(self.parser.get('sample1','description'))
+            "description":str(self.parser.get('sample1','description')),
             "t_dwell":float(self.parser.get('sample1','t_dwell')),
             "t_pause":float(self.parser.get('sample1','t_pause')),
             "t_settle":float(self.parser.get('sample1','t_settle'))
@@ -66,14 +63,14 @@ class LakeShore372(object):
             "curvenumber":int(self.parser.get('sample2','curvenumber')),
             "tempcoeff":int(self.parser.get('sample2','tempcoeff')),
             "filterwindow":int(self.parser.get('sample2','filterwindow')),
-            "description":str(self.parser.get('sample2','description'))
+            "description":str(self.parser.get('sample2','description')),
             "t_dwell":float(self.parser.get('sample2','t_dwell')),
             "t_pause":float(self.parser.get('sample2','t_pause')),
             "t_settle":float(self.parser.get('sample2','t_settle'))
         }
         #Timing
         self.timeConstants = {
-            "t_therm":float(self.parser.get('timeconstants','t_const')),
+            "t_therm":float(self.parser.get('timeconstants','t_therm')),
             "t_switch":float(self.parser.get('timeconstants','t_switch'))
         }
     #Attempts to open serial instance
@@ -170,61 +167,59 @@ class LakeShore372Data(object):
 
 ###Script###
 
-###Configuration INI file / Dictionaries###
-LSHCfg = LakeShoreConfig('config.ini')
-#Connection configuration
+#Open up a serial connection after loading config file:
+LSHDev = LakeShore372() #Create and open instance of the LakeShore372 class
+LSHDev.getConfig('config.ini') #Load configuration/ini file
+LSHDev.open() #Open serial port designated in ini file.
 
 
-#First, create and open instance of the LakeShore372 class:
-LSHDev = LakeShore372()
-LSHDev.open(LSHCfg.serial)
-#Second, Create Instance of the data handler class and a datafile:
-FileDescription = raw_input("What should we call the file? ")
-DateStr = datetime.now().strftime('%Y%m%d%-H%M%S')
-DataFileName = DateStr + '_' + FileDescription + '.csv'
-LSHDataFile = open(DataFileName,'w')
-LSHData = LakeShore372Data(LSHDataFile)
+
+#Open a file to write to, with a description given by the user at runtime.
+FileDescription = raw_input("What should we call the file? ")#Get user description for this run
+DataFileName = datetime.now().strftime('%Y%m%d%-H%M%S') + '_' + FileDescription + '.csv' #give it a dated filename
+LSHDataFile = open(DataFileName,'w') #Open the file
+LSHData = LakeShore372Data(LSHDataFile) #Pass file to data handler class
 
 #next, send one-time configuration over serial:
 #heater:
-LSHDev.SetSampleHeaterRange(sampleHeater)
+LSHDev.SetSampleHeaterRange(LSHDev.sampleHeater)
 #thermometer:
-LSHDev.setCHParams(mcthermo,1)
-LSHDev.setFilterParams(mcthermo)
+LSHDev.setCHParams(LSHDev.mcthermo,1) #Set the MC thermometer channel preferences
+LSHDev.setFilterParams(LSHDev.mcthermo) #Set the filter prefs for the MC thermometer
 #sample1:
-LSHDev.setCHParams(sample1,1)
-LSHDev.setFilterParams(sample1)
+LSHDev.setCHParams(LSHDev.sample1,1)
+LSHDev.setFilterParams(LSHDev.sample1)
 #sample2:
-LSHDev.setCHParams(sample2,1)
-LSHDev.setFilterParams(sample2)
+LSHDev.setCHParams(LSHDev.sample2,1)
+LSHDev.setFilterParams(LSHDev.sample2)
 
 
 
 ##Main Loop:
 i = 0 #step number
 
-while currentpc < sampleHeater["finalpc"]:
+while currentpc < LSHDev.sampleHeater["finalpc"]:
     #Set Current
-    currentpc = sampleHeater["initpc"] + ((i)**(1.0/2.0)) * sampleHeater["stepsizepc"]
+    currentpc = LSHDev.sampleHeater["initpc"] + ((i)**(1.0/2.0)) * LSHDev.sampleHeater["stepsizepc"]
     #Wait Thermalization
-    sleep(timeConstants["t_therm"])
+    sleep(LSHDev.timeConstants["t_therm"])
     #Wait (Other)
-    LSH.ScanTo(scannerChannelMap["mcthermometer"],scannerChannelMap["autoscan"])
-    sleep(timeConstants["t_switch"] + timeConstants["t_settle"])
+    LSH.ScanTo(LSHDev.mcthermometer)
+    sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermometer["t_settle"])
     #Scan to Temp Probe, Read Temp Probe T/R
-    TempProbeT = LSH.ReadKelvin(scannerChannelMap["mcthermometer"])
+    TempProbeT = LSH.ReadKelvin(LSHDev.mcthermometer)
     sleep(1.0)
-    TempProbeR = LSH.ReadResistance(scannerChannelMap["mcthermometer"])
+    TempProbeR = LSH.ReadResistance(LSHDev.mcthermometer)
     #Wait (Other)
-    LSH.ScanTo(scannerChannelMap["Sample1"],scannerChannelMap["autoscan"])
-    sleep(timeConstants["t_switch"] + timeConstants["t_settle"])
+    LSH.ScanTo(LSHDev.sample1)
+    sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"])
     #Scan to Sample1 Sample, Read R
-    Sample1R = LSH.ReadResistance(scannerChannelMap["Sample1"])
+    Sample1R = LSH.ReadResistance(LSHDev.sample1)
     #Wait (Other)
-    LSH.ScanTo(scannerChannelMap["Sample2"],scannerChannelMap["autoscan"])
-    sleep(timeConstants["t_switch"] + timeConstants["t_settle"])
+    LSH.ScanTo(LSHDev.sample2)
+    sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"])
     #Scan to Sample2ed Sample, Read R
-    Sample2R = LSH.ReadResistance(scannerChannelMap["Sample2"])
+    Sample2R = LSH.ReadResistance(LSHDev.sample2)
     #Append values to lists:
     LSHData.AppendMCThermoK(TempProbeT)
     LSHData.AppendMCThermoR(TempProbeR)
