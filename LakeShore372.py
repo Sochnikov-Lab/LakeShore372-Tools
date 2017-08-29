@@ -174,7 +174,7 @@ class LakeShore372Data(object):
         #CSV file
         self.DataFile = DataFile
         #Write Header:
-        self.DataFile.write("heater%,MCTemp,MCResist,1Resistance,2Resistance\n")
+        self.DataFile.write("time,heater%,MCTemp,MCResist,1Resistance,2Resistance\n")
 
     def AppendMCThermoR(self,RReading):
         self.MCThermoRL = RReading
@@ -188,8 +188,8 @@ class LakeShore372Data(object):
     def AppendSample2R(self,RReading):
         self.Sample2RL = RReading
         self.Sample2R.append(RReading)
-    def UpdateCSV(self):
-        self.DataFile.write(str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + '\n')
+    def UpdateCSV(self,htrpc):
+        self.DataFile.write(str(datetime.now().strftime('%Y%m%d%-H%M%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + '\n')
     def UpdatePlot(self):
         print("muh plot")
 
@@ -214,12 +214,15 @@ LSHDev.SetSampleHeaterRange(LSHDev.sampleHeater)
 #thermometer:
 LSHDev.setCHParams(LSHDev.mcthermo,1) #Set the MC thermometer channel preferences
 LSHDev.setFilterParams(LSHDev.mcthermo) #Set the filter prefs for the MC thermometer
+LSHDev.Excite(LSHDev.mcthermo) #Sets excitation parameters for MC thermometer
 #sample1:
 LSHDev.setCHParams(LSHDev.sample1,1)
 LSHDev.setFilterParams(LSHDev.sample1)
+LSHDev.Excite(LSHDev.sample1) #Sets excitation parameters for MC thermometer
 #sample2:
 LSHDev.setCHParams(LSHDev.sample2,1)
 LSHDev.setFilterParams(LSHDev.sample2)
+LSHDev.Excite(LSHDev.sample2) #Sets excitation parameters for MC thermometer
 
 
 
@@ -231,32 +234,34 @@ while currentpc < LSHDev.sampleHeater["finalpc"]:
     currentpc = LSHDev.sampleHeater["initpc"] + ((i)**(1.0/2.0)) * LSHDev.sampleHeater["stepsizepc"]
     #Wait Thermalization
     sleep(LSHDev.timeConstants["t_therm"])
-    #Wait (Other)
-    LSH.ScanTo(LSHDev.mcthermometer)
-    sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermometer["t_settle"])
-    #Scan to Temp Probe, Read Temp Probe T/R
-    TempProbeT = LSH.ReadKelvin(LSHDev.mcthermometer)
-    sleep(1.0)
-    TempProbeR = LSH.ReadResistance(LSHDev.mcthermometer)
-    #Wait (Other)
-    LSH.ScanTo(LSHDev.sample1)
-    sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"])
-    #Scan to Sample1 Sample, Read R
-    Sample1R = LSH.ReadResistance(LSHDev.sample1)
-    #Wait (Other)
-    LSH.ScanTo(LSHDev.sample2)
-    sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"])
-    #Scan to Sample2ed Sample, Read R
-    Sample2R = LSH.ReadResistance(LSHDev.sample2)
-    #Append values to lists:
-    LSHData.AppendMCThermoK(TempProbeT)
-    LSHData.AppendMCThermoR(TempProbeR)
-    LSHData.AppendSample1R(Sample1R)
-    LSHData.AppendSample2R(Sample2R)
-    #Update CSV file
-    LSHData.UpdateCSV()
-    #Update Plot
-    LSHData.UpdatePlot()
+
+    for measurement in range(0,5):
+        #Wait (Other)
+        LSH.ScanTo(LSHDev.mcthermometer)
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermometer["t_settle"])
+        #Scan to Temp Probe, Read Temp Probe T/R
+        TempProbeT = LSH.ReadKelvin(LSHDev.mcthermometer)
+        sleep(1.0)
+        TempProbeR = LSH.ReadResistance(LSHDev.mcthermometer)
+        LSHData.AppendMCThermoK(TempProbeT)
+        LSHData.AppendMCThermoR(TempProbeR)
+
+        #Wait (Other)
+        LSH.ScanTo(LSHDev.sample1)
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"])
+        #Scan to Sample1 Sample, Read R
+        Sample1R = LSH.ReadResistance(LSHDev.sample1)
+        LSHData.AppendSample1R(Sample1R)
+        #Wait (Other)
+        LSH.ScanTo(LSHDev.sample2)
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"])
+        #Scan to Sample2ed Sample, Read R
+        Sample2R = LSH.ReadResistance(LSHDev.sample2)
+        LSHData.AppendSample2R(Sample2R)
+        #Update CSV file
+        LSHData.UpdateCSV(currentpc)
+        #Update Plot
+        LSHData.UpdatePlot()
     ##Loop Back
     i = i + 1
 
