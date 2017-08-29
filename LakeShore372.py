@@ -46,7 +46,12 @@ class LakeShore372(object):
             "filterwindow":int(self.parser.get('mcthermometer','filterwindow')),
             "t_dwell":float(self.parser.get('mcthermometer','t_dwell')),
             "t_pause":float(self.parser.get('mcthermometer','t_pause')),
-            "t_settle":float(self.parser.get('mcthermometer','t_settle'))
+            "t_settle":float(self.parser.get('mcthermometer','t_settle')),
+            "excitemode":float(self.parser.get('mcthermometer','excitemode')),
+            "excitecurrent":float(self.parser.get('mcthermometer','excitecurrent')),
+            "autorange":float(self.parser.get('mcthermometer','autorange')),
+            "range":float(self.parser.get('mcthermometer','range')),
+            "units":float(self.parser.get('mcthermometer','units'))
         }
         self.sample1 = {
             "channel":int(self.parser.get('sample1','channel')),
@@ -56,7 +61,12 @@ class LakeShore372(object):
             "description":str(self.parser.get('sample1','description')),
             "t_dwell":float(self.parser.get('sample1','t_dwell')),
             "t_pause":float(self.parser.get('sample1','t_pause')),
-            "t_settle":float(self.parser.get('sample1','t_settle'))
+            "t_settle":float(self.parser.get('sample1','t_settle')),
+            "excitemode":float(self.parser.get('sample1','excitemode')),
+            "excitecurrent":float(self.parser.get('sample1','excitecurrent')),
+            "autorange":float(self.parser.get('sample1','autorange')),
+            "range":float(self.parser.get('sample1','range')),
+            "units":float(self.parser.get('sample1','units'))
         }
         self.sample2 = {
             "channel":int(self.parser.get('sample2','channel')),
@@ -66,7 +76,12 @@ class LakeShore372(object):
             "description":str(self.parser.get('sample2','description')),
             "t_dwell":float(self.parser.get('sample2','t_dwell')),
             "t_pause":float(self.parser.get('sample2','t_pause')),
-            "t_settle":float(self.parser.get('sample2','t_settle'))
+            "t_settle":float(self.parser.get('sample2','t_settle')),
+            "excitemode":float(self.parser.get('sample2','excitemode')),
+            "excitecurrent":float(self.parser.get('sample2','excitecurrent')),
+            "autorange":float(self.parser.get('sample2','autorange')),
+            "range":float(self.parser.get('sample2','range')),
+            "units":float(self.parser.get('sample2','units'))
         }
         #Timing
         self.timeConstants = {
@@ -97,6 +112,13 @@ class LakeShore372(object):
             print("**Failed to close serial port**")
     def setCHParams(self,chdict,Enabled=1):
         self.serIO.write(unicode('INSET' + str(chdict["channel"]) + ',' + str(Enabled) + ',' + str(chdict["t_dwell"]) + ',' + str(chdict["t_pause"]) + ',' + str(chdict["curvenumber"]) + ',' + str(chdict["tempcoeff"]) + '\r'))
+        self.serIO.flush()
+    def Excite(self,chdict,Enabled=1):
+        if Enabled == 1:
+            currentShunt = 0
+        else:
+            currentShunt = 1
+        self.serIO.write(unicode('INTYPE' + str(chdict["channel"]) + ',' + str(chdict["excitemode"]) + ',' + str(chdict["excitesetting"]) + ',' + str(chdict["autorange"]) + ',' + str(currentShunt) + ',' + str(chdict["units"]) + '\r'))
         self.serIO.flush()
     def setFilterParams(self,chdict,Enabled=1):
         self.serIO.write(unicode('FILTER' + str(chdict[channel]) + ',' + str(Enabled) + ',' + str(chdict["t_settle"]) + ',' + str(chdict["filterwindow"]) + '\r'))
