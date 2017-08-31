@@ -142,7 +142,7 @@ class LakeShore372Device(object):
     def ReadKelvin(self,chdict):
         self.serIO.write(unicode('RDGK?' + str(chdict["channel"]) + '\r'))
         self.serIO.flush()
-        return float(self.serIO.readline())
+        return float(str(self.serIO.readline()).rstrip().lstrip())
         #return float(str(self.serIO.readline()).rstrip().lstrip())
     def ScanTo(self,chdict,AUTOSCAN=0):
         self.serIO.write(unicode('SCAN' + str(chdict["channel"]) + ',' + str(AUTOSCAN) + '\r'))
