@@ -1,8 +1,8 @@
 import serial
 import io
-import time
+from time import sleep
 import numpy as np
-import pandas as pd
+#import pandas as pd
 from datetime import datetime
 from configparser import ConfigParser
 #import matplotlib.pyplot as plt
@@ -14,13 +14,13 @@ class LakeShore372Device(object):
         self.ID = ''         #ID of instrument
         self.ser = serial.Serial() #Serial Instance
         self.ser.timeout = 0.25 #read timeout --Should fix this to get rid of latency
-        self.serIO = io.TextIOWrapper(io.BufferedRWPair(self.ser,self.ser),newline='\r\n')
+        self.serIO = io.TextIOWrapper(io.BufferedRWPair(self.ser,self.ser),newline="\r\n")
         self.parser = ConfigParser()
     def getConfig(self,inifilename):
         self.parser.read(inifilename)
         self.serialcfg = {
-            "port":str(self.parser.get('connection','serialport')),
-            "baud":int(self.parser.get('connection','baudrate'))
+            "serialport":str(self.parser.get('connection','serialport')),
+            "baudrate":int(self.parser.get('connection','baudrate'))
         }
         #sample heater configuration
         #resistance: Ohms
@@ -36,7 +36,8 @@ class LakeShore372Device(object):
         }
         #Scanner cfg
         self.scanner = {
-            "autoscan":int(self.parser.get('scannerch','autoscan'))
+            "autoscan":int(self.parser.get('scanner','autoscan')),
+            "scannerpasses":int(self.parser.get('scanner','scannerpasses'))
         }
         #mixing chamber thermometer cfg
         self.mcthermo = {
@@ -48,7 +49,7 @@ class LakeShore372Device(object):
             "t_pause":float(self.parser.get('mcthermometer','t_pause')),
             "t_settle":float(self.parser.get('mcthermometer','t_settle')),
             "excitemode":float(self.parser.get('mcthermometer','excitemode')),
-            "excitecurrent":float(self.parser.get('mcthermometer','excitecurrent')),
+            "excitesetting":float(self.parser.get('mcthermometer','excitesetting')),
             "autorange":float(self.parser.get('mcthermometer','autorange')),
             "range":float(self.parser.get('mcthermometer','range')),
             "units":float(self.parser.get('mcthermometer','units'))
@@ -63,7 +64,7 @@ class LakeShore372Device(object):
             "t_pause":float(self.parser.get('sample1','t_pause')),
             "t_settle":float(self.parser.get('sample1','t_settle')),
             "excitemode":float(self.parser.get('sample1','excitemode')),
-            "excitecurrent":float(self.parser.get('sample1','excitecurrent')),
+            "excitesetting":float(self.parser.get('sample1','excitesetting')),
             "autorange":float(self.parser.get('sample1','autorange')),
             "range":float(self.parser.get('sample1','range')),
             "units":float(self.parser.get('sample1','units'))
@@ -78,7 +79,7 @@ class LakeShore372Device(object):
             "t_pause":float(self.parser.get('sample2','t_pause')),
             "t_settle":float(self.parser.get('sample2','t_settle')),
             "excitemode":float(self.parser.get('sample2','excitemode')),
-            "excitecurrent":float(self.parser.get('sample2','excitecurrent')),
+            "excitesetting":float(self.parser.get('sample2','excitesetting')),
             "autorange":float(self.parser.get('sample2','autorange')),
             "range":float(self.parser.get('sample2','range')),
             "units":float(self.parser.get('sample2','units'))
@@ -101,7 +102,7 @@ class LakeShore372Device(object):
 
             #Turn off all channels:
             for i in range(0,16):
-                self.serIO.write(unicode('INSET' + str(CH) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(1) + '\r'))
+                self.serIO.write(unicode('INSET' + str(self.ser.port) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(1) + '\r'))
                 sleep(0.125)
         except serial.SerialException:
             print("**Failed to open serial port**")
@@ -125,7 +126,7 @@ class LakeShore372Device(object):
         self.serIO.flush()
     #Analog to FILTER - Sets filter if Enabled = 1.
     def setFilterParams(self,chdict,Enabled=1):
-        self.serIO.write(unicode('FILTER' + str(chdict[channel]) + ',' + str(Enabled) + ',' + str(chdict["t_settle"]) + ',' + str(chdict["filterwindow"]) + '\r'))
+        self.serIO.write(unicode('FILTER' + str(chdict["channel"]) + ',' + str(Enabled) + ',' + str(chdict["t_settle"]) + ',' + str(chdict["filterwindow"]) + '\r'))
         self.serIO.flush()
     #Analog to RDGST? - Returns status for given channel
     def ReadCHStatus(self,chdict):
@@ -141,7 +142,8 @@ class LakeShore372Device(object):
     def ReadKelvin(self,chdict):
         self.serIO.write(unicode('RDGK?' + str(chdict["channel"]) + '\r'))
         self.serIO.flush()
-        return float(str(self.serIO.readline()).rstrip().lstrip())
+        return float(self.serIO.readline())
+        #return float(str(self.serIO.readline()).rstrip().lstrip())
     def ScanTo(self,chdict,AUTOSCAN=0):
         self.serIO.write(unicode('SCAN' + str(chdict["channel"]) + ',' + str(AUTOSCAN) + '\r'))
         self.serIO.flush()
