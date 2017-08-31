@@ -5,7 +5,7 @@ import numpy as np
 #import pandas as pd
 from datetime import datetime
 from configparser import ConfigParser
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 ###LakeShore AC/Resistance Bridge Class###
 class LakeShore372Device(object):
@@ -13,7 +13,7 @@ class LakeShore372Device(object):
     def __init__(self):
         self.ID = ''         #ID of instrument
         self.ser = serial.Serial() #Serial Instance
-        self.ser.timeout = 0.25 #read timeout --Should fix this to get rid of latency
+        self.ser.timeout = 1 #read timeout --Should fix this to get rid of latency
         self.serIO = io.TextIOWrapper(io.BufferedRWPair(self.ser,self.ser),newline="\r\n")
         self.parser = ConfigParser()
     def getConfig(self,inifilename):
@@ -96,9 +96,9 @@ class LakeShore372Device(object):
             self.ser.baudrate = self.serialcfg["baudrate"]
             self.ser.open()
             #Read ID from Serial Port:
-            self.serIO.write(unicode('*IDN?\r'))
-            self.serIO.flush()
-            self.ID = str(self.serIO.readline()).rstrip().lstrip()
+            #self.serIO.write(unicode('*IDN?\r'))
+            #self.serIO.flush()
+            #self.ID = str(self.serIO.readline()).rstrip().lstrip()
 
             #Turn off all channels:
             for i in range(0,16):
@@ -175,6 +175,13 @@ class LakeShore372Data(object):
         self.Sample2RL = 0.0
         #CSV file
         self.DataFile = DataFile
+        #plot
+        self.pltfig = plt.figure()
+        self.ax = plt.gca()
+        self.ax.set_xlabel("Temperature [K]")
+        self.ax.set_ylabel("Resistance [$\Omega$]")
+        self.ax.legend()
+        plt.ion() #Interactive Plotting
         #Write Header:
         self.DataFile.write("time,heater%,MCTemp,MCResist,1Resistance,2Resistance\n")
 
@@ -182,7 +189,7 @@ class LakeShore372Data(object):
         self.MCThermoRL = RReading
         self.MCThermoR.append(RReading)
     def AppendMCThermoK(self,KReading):
-        self.MCThermoRK = RReading
+        self.MCThermoRK = KReading
         self.MCThermoK.append(KReading)
     def AppendSample1R(self,RReading):
         self.Sample1RL = RReading
@@ -191,6 +198,9 @@ class LakeShore372Data(object):
         self.Sample2RL = RReading
         self.Sample2R.append(RReading)
     def UpdateCSV(self,htrpc):
-        self.DataFile.write(str(datetime.now().strftime('%Y%m%d%-H%M%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + '\n')
-    def UpdatePlot(self):
-        print("muh plot")
+        self.DataFile.write(str(datetime.now().strftime('%Y%m%d%H%M%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + '\n')
+    def UpdatePlot(self,sample1desc,sample2desc):
+        self.ax.scatter(self.MCThermoK,self.Sample1R,c='b',label=sample1desc)
+        self.ax.scatter(self.MCThermoK,self.Sample2R,c='r',label=sample2desc)
+        plt.pause(0.05)
+        print("Plot Updated")

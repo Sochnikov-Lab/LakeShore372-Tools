@@ -17,7 +17,7 @@ LSHDev.getConfig('config.ini') #Load configuration/ini file
 print("o  'config.ini' File loaded")
 LSHDev.open() #Open serial port designated in ini file.
 print("o  Serial Port Opened")
-print("DevID: " + LSHDev.ID)
+#print("DevID: " + LSHDev.ID)
 print("===========")
 
 #Open a file to write to, with a description given by the user at runtime.
@@ -69,10 +69,10 @@ print("o  Excitation Parameters SET")
 sleep(0.25)
 print("==========================")
 
-print(".")
 
 
 ##Main Loop:
+t_safety = 1 #Time to add to delays to allow the LakeShore372 harware to finish first
 i = 0 #step number
 currentpc = LSHDev.sampleheater["initpc"]
 while currentpc < LSHDev.sampleheater["finalpc"]:
@@ -81,20 +81,20 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
     print("Current Percentage:" + str(currentpc))
     #Wait Thermalization
     print("Sleeping for Thermalization: " + str(LSHDev.timeConstants["t_therm"]) + " seconds")
-    sleep(LSHDev.timeConstants["t_therm"])
+    sleep(LSHDev.timeConstants["t_therm"]+t_safety)
     print("Thermalization Over")
     for measurement in range(0,LSHDev.scanner["scannerpasses"]):
         #MC Thermometer
         print(":Scanner: MC Thermometer:")
         LSHDev.ScanTo(LSHDev.mcthermo)
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
-        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"])
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]+t_safety)
         #Scan to Temp Probe, Read Temp Probe T/R
         TempProbeT = LSHDev.ReadKelvin(LSHDev.mcthermo)
-        print("o  Read Temperature")
+        print("o  Read Temperature: " + str(TempProbeT) + " K")
         sleep(0.25)
-        TempProbeR = LSH.ReadResistance(LSHDev.mcthermo)
-        print("o  Read Resistance")
+        TempProbeR = LSHDev.ReadResistance(LSHDev.mcthermo)
+        print("o  Read Resistance: " + str(TempProbeR) +" Ohms")
         LSHData.AppendMCThermoK(TempProbeT)
         LSHData.AppendMCThermoR(TempProbeR)
         print("o  Appended Data to arrays")
@@ -103,24 +103,34 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
         print(":Scanner: Sample1:")
         LSHDev.ScanTo(LSHDev.sample1)
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
-        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"])
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"]+t_safety)
         Sample1R = LSHDev.ReadResistance(LSHDev.sample1)
         print("o  Read Resistance: " + str(Sample1R) + " Ohms")
         LSHData.AppendSample1R(Sample1R)
         print("o  Appended Data to arrays")
 
         #Sample 2
-        print(":Scanner: Sample1:")
+        print(":Scanner: Sample2:")
         LSHDev.ScanTo(LSHDev.sample2)
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
-        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"])
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"]+t_safety)
         Sample2R = LSHDev.ReadResistance(LSHDev.sample2)
         print("o  Read Resistance: " + str(Sample1R) + " Ohms")
         LSHData.AppendSample2R(Sample2R)
         print("o  Appended Data to arrays")
 
         #Update CSV
+    #    if LSHDataFile.closed:
+    #        LSHDataFile.open(DataFileName,'w')
         LSHData.UpdateCSV(currentpc)
-        LSHData.UpdatePlot()
+    #    LSHDataFile.close() #Close to prevent errors to be proactive about corruption
+        LSHData.UpdatePlot(LSHDev.sample1["description"],LSHDev.sample2["description"])
+        print("It should be safe to exit for the next 10 seconds: CTRL-C to exit")
+        sleep(10)
+
     ##Loop Back
     i = i + 1
+
+#Should keep plot up
+while True:
+    plt.pause(0.05)
