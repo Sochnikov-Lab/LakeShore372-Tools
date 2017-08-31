@@ -178,9 +178,6 @@ class LakeShore372Data(object):
         #plot
         self.pltfig = plt.figure()
         self.ax = plt.gca()
-        self.ax.set_xlabel("Temperature [K]")
-        self.ax.set_ylabel("Resistance [$\Omega$]")
-        self.ax.legend()
         plt.ion() #Interactive Plotting
         #Write Header:
         self.DataFile.write("time,heater%,MCTemp,MCResist,1Resistance,2Resistance\n")
@@ -200,7 +197,12 @@ class LakeShore372Data(object):
     def UpdateCSV(self,htrpc):
         self.DataFile.write(str(datetime.now().strftime('%Y%m%d%H%M%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + '\n')
     def UpdatePlot(self,sample1desc,sample2desc):
-        self.ax.scatter(self.MCThermoK,self.Sample1R,c='b',label=sample1desc)
-        self.ax.scatter(self.MCThermoK,self.Sample2R,c='r',label=sample2desc)
+        s1plt = self.ax.scatter(self.MCThermoK,self.Sample1R,c='b',label=sample1desc)
+        s2plt = self.ax.scatter(self.MCThermoK,self.Sample2R,c='r',label=sample2desc)
+        self.ax.set_title("Resistances vs. Temperature")
+        self.ax.set_xlabel("Temperature [K]")
+        self.ax.set_ylabel("Resistance [$\Omega$]")
+        self.ax.legend()
+
         plt.pause(0.05)
         print("Plot Updated")
