@@ -116,7 +116,7 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"]+t_safety)
         Sample2R = LSHDev.ReadResistance(LSHDev.sample2)
-        print("o  Read Resistance: " + str(Sample1R) + " Ohms")
+        print("o  Read Resistance: " + str(Sample2R) + " Ohms")
         LSHData.AppendSample2R(Sample2R)
         print("o  Appended Data to arrays")
 
