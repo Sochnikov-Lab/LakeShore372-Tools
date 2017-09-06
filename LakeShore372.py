@@ -122,6 +122,7 @@ class LakeShore372Device(object):
     def getDevID(self):
         self.serIO.write(unicode('*IDN?\r\n'))
         self.serIO.flush()
+        return str(self.serIO.readline()).rstrip().lstrip()
     #Analog to INSET - Sets channel parameters / Enables channels
     def setCHParams(self,chdict,Enabled=1):
         self.serIO.write(unicode('INSET' + str(chdict["channel"]) + ',' + str(Enabled) + ',' + str(chdict["t_dwell"]) + ',' + str(chdict["t_pause"]) + ',' + str(chdict["curvenumber"]) + ',' + str(chdict["tempcoeff"]) + '\r\n'))
