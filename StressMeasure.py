@@ -20,56 +20,57 @@ print("o  Serial Port Opened")
 #print("DevID: " + LSHDev.ID)
 print("===========")
 
-#Open a file to write to, with a description given by the user at runtime.
-FileDescription = raw_input("What should we call the file? ")#Get user description for this run
-DataFileName = datetime.now().strftime('%Y%m%d-%H%M%S') + '_' + FileDescription + '.csv' #give it a dated filename
-LSHDataFile = open(DataFileName,'w') #Open the file
-LSHData = ls.LakeShore372Data(LSHDataFile) #Pass file to data handler class
+
 
 #next, send one-time configuration over serial:
-print("=======OneTimeConfig======")
+commandwaittime = 1.0
 
+print("=======Sending One Time Device Configuration======")
+sleep(commandwaittime)
 #heater:
 print(":Sample Heater:")
 LSHDev.SetSampleHeaterRange(LSHDev.sampleheater)
 print("o  Heater Range SET")
-sleep(0.25)
+sleep(commandwaittime)
 #thermometer:
 print(":MC Thermometer:")
 LSHDev.setCHParams(LSHDev.mcthermo,1) #Set the MC thermometer channel preferences
 print("o  Channel Parameters SET")
-sleep(0.25)
+sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.mcthermo) #Set the filter prefs for the MC thermometer
 print("o  Filter Parameters SET")
-sleep(0.25)
+sleep(commandwaittime)
 LSHDev.Excite(LSHDev.mcthermo) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
-sleep(0.25)
+sleep(commandwaittime)
 #sample1:
 print(":Sample 1:")
 LSHDev.setCHParams(LSHDev.sample1,1)
 print("o  Channel Parameters SET")
-sleep(0.25)
+sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.sample1)
 print("o  Filter Parameters SET")
-sleep(0.25)
+sleep(commandwaittime)
 LSHDev.Excite(LSHDev.sample1) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
-sleep(0.25)
+sleep(commandwaittime)
 #sample2:
 print(":Sample 2:")
 LSHDev.setCHParams(LSHDev.sample2,1)
 print("o  Channel Parameters SET")
-sleep(0.25)
+sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.sample2)
 print("o  Filter Parameters SET")
-sleep(0.25)
+sleep(commandwaittime)
 LSHDev.Excite(LSHDev.sample2) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
-sleep(0.25)
-print("==========================")
+print("============One Time Configuration Finished==============")
 
-
+#Open a file to write to, with a description given by the user at runtime.
+FileDescription = raw_input("What should we call this run's file? ")#Get user description for this run
+DataFileName = datetime.now().strftime('%Y%m%d-%H%M%S') + '_' + FileDescription + '.csv' #give it a dated filename
+LSHDataFile = open(DataFileName,'w') #Open the file
+LSHData = ls.LakeShore372Data(LSHDataFile) #Pass file to data handler class
 
 ##Main Loop:
 t_safety = 1 #Time to add to delays to allow the LakeShore372 harware to finish first

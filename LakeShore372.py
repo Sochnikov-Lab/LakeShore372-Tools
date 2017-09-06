@@ -102,15 +102,17 @@ class LakeShore372Device(object):
             self.ser.dsrdtr = False #Turn off hardware DSR/DTR flow control
 
             self.ser.open()
+
+
             #Read ID from Serial Port:
             #self.serIO.write(unicode('*IDN?\r'))
-            #self.serIO.flush()
+            self.serIO.flush()
             #self.ID = str(self.serIO.readline()).rstrip().lstrip()
 
             #Turn off all channels:
             for i in range(0,16):
-                self.serIO.write(unicode('INSET' + str(self.ser.port) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(1) + '\r\n'))
-                sleep(0.125)
+                self.serIO.write(unicode('INSET' + str(i) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(1) + '\r\n'))
+                sleep(0.25)
         except serial.SerialException:
             print("**Failed to open serial port**")
     #Closes serial port
