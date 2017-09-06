@@ -20,6 +20,6 @@ print("o  Serial Port Opened")
 #print("DevID: " + LSHDev.ID)
 print("===========")
 
-print("Device ID: " + LSHDev.getDevID())
+print("Device ID: " + str(LSHDev.getDevID()))
 print("Resistance of Sample 1: " + str(LSHDev.ReadResistance(LSHDev.sample1)))
 LSHDev.close()
