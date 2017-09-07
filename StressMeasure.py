@@ -44,7 +44,7 @@ sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.mcthermo) #Set the filter prefs for the MC thermometer
 print("o  Filter Parameters SET")
 sleep(commandwaittime)
-LSHDev.Excite(LSHDev.mcthermo) #Sets excitation parameters for MC thermometer
+LSHDev.Excite(LSHDev.mcthermo,1) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
 sleep(commandwaittime)
 #sample1:
@@ -55,7 +55,7 @@ sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.sample1)
 print("o  Filter Parameters SET")
 sleep(commandwaittime)
-LSHDev.Excite(LSHDev.sample1) #Sets excitation parameters for MC thermometer
+LSHDev.Excite(LSHDev.sample1,1) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
 sleep(commandwaittime)
 #sample2:
@@ -66,7 +66,7 @@ sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.sample2)
 print("o  Filter Parameters SET")
 sleep(commandwaittime)
-LSHDev.Excite(LSHDev.sample2) #Sets excitation parameters for MC thermometer
+LSHDev.Excite(LSHDev.sample2,1) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
 print("============One Time Configuration Finished==============")
 
