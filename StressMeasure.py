@@ -79,6 +79,7 @@ currentpc = LSHDev.sampleheater["initpc"]
 while currentpc < LSHDev.sampleheater["finalpc"]:
     #Set Current
     currentpc = LSHDev.sampleheater["initpc"] + ((i)**(1.0/2.0)) * LSHDev.sampleheater["deltapc"]
+    LSHDev.SetSampleHeaterOut(currentpc)
     print("Current Percentage:" + str(currentpc))
     #Wait Thermalization
     print("Sleeping for Thermalization: " + str(LSHDev.timeConstants["t_therm"]) + " seconds")

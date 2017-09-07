@@ -168,6 +168,9 @@ class LakeShore372Device(object):
     def SetSampleHeaterRange(self,htrdict):
         self.serIO.write(unicode('RANGE0,' + str(htrdict["range"]) + '\r\n'))
         self.serIO.flush()
+    def SetSampleHeaterOut(self,htrpc):
+        self.serIO.write(unicode('MOUT,' + str(htrpc) + '\r\n'))
+        self.serIO.flush()
 
 #Data Handler Class (Saves/Plots data)
 class LakeShore372Data(object):
