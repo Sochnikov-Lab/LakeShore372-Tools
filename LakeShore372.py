@@ -131,7 +131,7 @@ class LakeShore372Device(object):
         self.serIO.flush()
     #Analog to INTYPE - Sets excitation settings, and turns on if Enabled = 1
     def Excite(self,chdict):
-        self.serIO.write(unicode('INTYPE' + str(chdict["channel"]) + ',' + str(chdict["excitemode"]) + ',' + str(chdict["excitesetting"]) + ',' + str(chdict["autorange"]) + ',' + str(0) + ',' + str(chdict["units"]) + '\r\n'))
+        self.serIO.write(unicode('INTYPE' + str(chdict["channel"]) + ',' + str(chdict["excitemode"]) + ',' + str(chdict["excitesetting"]) + ',' + str(chdict["autorange"]) + ',' + str(chdict["range"]) + ',' + str(0) + ',' + str(chdict["units"]) + '\r\n'))
         self.serIO.flush()
     #Analog to FILTER - Sets filter if Enabled = 1.
     def setFilterParams(self,chdict,Enabled=1):
