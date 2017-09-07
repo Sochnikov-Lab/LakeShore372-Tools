@@ -32,6 +32,10 @@ print(":Sample Heater:")
 LSHDev.SetSampleHeaterRange(LSHDev.sampleheater)
 print("o  Heater Range SET")
 sleep(commandwaittime)
+LSHDev.SetSampleHeaterOut(0.0)
+LSHDev.HeaterOn()
+print("o  Heater Circuit Turned On, heater set to 0.0pc for safety reasons")
+
 #thermometer:
 print(":MC Thermometer:")
 LSHDev.setCHParams(LSHDev.mcthermo,1) #Set the MC thermometer channel preferences
@@ -89,6 +93,7 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
         #MC Thermometer
         print(":Scanner: MC Thermometer:")
         LSHDev.ScanTo(LSHDev.mcthermo)
+        LSHDev.Excite(LSHDev.mcthermo)
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]+t_safety)
         #Scan to Temp Probe, Read Temp Probe T/R
@@ -104,6 +109,8 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
         #Sample 1
         print(":Scanner: Sample1:")
         LSHDev.ScanTo(LSHDev.sample1)
+        LSHDev.Excite(LSHDev.sample1)
+
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"]+t_safety)
         Sample1R = LSHDev.ReadResistance(LSHDev.sample1)
@@ -114,6 +121,8 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
         #Sample 2
         print(":Scanner: Sample2:")
         LSHDev.ScanTo(LSHDev.sample2)
+        LSHDev.Excite(LSHDev.sample2)
+
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"]+t_safety)
         Sample2R = LSHDev.ReadResistance(LSHDev.sample2)
@@ -133,6 +142,6 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
     ##Loop Back
     i = i + 1
 
-#Should keep plot up
-while True:
-    plt.pause(0.05)
+#Turn off heater:
+LSHDev.SetSampleHeaterOut(0.0)
+LSHDev.HeaterOff()
