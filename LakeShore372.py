@@ -161,6 +161,12 @@ class LakeShore372Device(object):
         self.serIO.write(unicode('SCAN' + str(chdict["channel"]) + ',' + str(AUTOSCAN) + '\r\n'))
         self.serIO.flush()
         #return float(str(self.serIO.readline()).rstrip().lstrip())
+    def HeaterOn(self):
+        self.serIO.write(unicode('OUTMODE0,2,16,0,0,5\r\n'))
+        self.serIO.flush()
+    def HeaterOff(self):
+        self.serIO.write(unicode('OUTMODE0,0,16,0,0,5\r\n'))
+        self.serIO.flush()
     def SetSampleHeaterCurrent(self,htrdict):
         self.serIO.write(unicode('HTRSET0,' + str(htrdict["resistance"]) + ',0,' + str(htrdict["maxcurrent"]) + ',' + str(htrdict["disp"]) + '\r\n'))
         self.serIO.flush()
@@ -195,6 +201,7 @@ class LakeShore372Data(object):
         self.pltfig = plt.figure()
         self.ax = plt.gca()
         plt.ion() #Interactive Plotting
+        self.LegendApplied = False
         #Write Header:
         self.DataFile.write("time,heater%,MCTemp,MCResist,1Resistance,2Resistance\n")
 
@@ -218,7 +225,9 @@ class LakeShore372Data(object):
         self.ax.set_title("Resistances vs. Temperature")
         self.ax.set_xlabel("Temperature [K]")
         self.ax.set_ylabel("Resistance [$\Omega$]")
-        self.ax.legend()
+        if self.LegendApplied == False:
+            self.ax.legend()
+            self.LegendApplied = True
 
         plt.pause(0.05)
         print("Plot Updated")
