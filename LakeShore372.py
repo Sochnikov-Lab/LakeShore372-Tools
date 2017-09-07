@@ -48,11 +48,11 @@ class LakeShore372Device(object):
             "t_dwell":float(self.parser.get('mcthermometer','t_dwell')),
             "t_pause":float(self.parser.get('mcthermometer','t_pause')),
             "t_settle":float(self.parser.get('mcthermometer','t_settle')),
-            "excitemode":float(self.parser.get('mcthermometer','excitemode')),
-            "excitesetting":float(self.parser.get('mcthermometer','excitesetting')),
-            "autorange":float(self.parser.get('mcthermometer','autorange')),
-            "range":float(self.parser.get('mcthermometer','range')),
-            "units":float(self.parser.get('mcthermometer','units'))
+            "excitemode":int(self.parser.get('mcthermometer','excitemode')),
+            "excitesetting":int(self.parser.get('mcthermometer','excitesetting')),
+            "autorange":int(self.parser.get('mcthermometer','autorange')),
+            "range":int(self.parser.get('mcthermometer','range')),
+            "units":int(self.parser.get('mcthermometer','units'))
         }
         self.sample1 = {
             "channel":int(self.parser.get('sample1','channel')),
@@ -63,11 +63,11 @@ class LakeShore372Device(object):
             "t_dwell":float(self.parser.get('sample1','t_dwell')),
             "t_pause":float(self.parser.get('sample1','t_pause')),
             "t_settle":float(self.parser.get('sample1','t_settle')),
-            "excitemode":float(self.parser.get('sample1','excitemode')),
-            "excitesetting":float(self.parser.get('sample1','excitesetting')),
-            "autorange":float(self.parser.get('sample1','autorange')),
-            "range":float(self.parser.get('sample1','range')),
-            "units":float(self.parser.get('sample1','units'))
+            "excitemode":int(self.parser.get('sample1','excitemode')),
+            "excitesetting":int(self.parser.get('sample1','excitesetting')),
+            "autorange":int(self.parser.get('sample1','autorange')),
+            "range":int(self.parser.get('sample1','range')),
+            "units":int(self.parser.get('sample1','units'))
         }
         self.sample2 = {
             "channel":int(self.parser.get('sample2','channel')),
@@ -78,11 +78,11 @@ class LakeShore372Device(object):
             "t_dwell":float(self.parser.get('sample2','t_dwell')),
             "t_pause":float(self.parser.get('sample2','t_pause')),
             "t_settle":float(self.parser.get('sample2','t_settle')),
-            "excitemode":float(self.parser.get('sample2','excitemode')),
-            "excitesetting":float(self.parser.get('sample2','excitesetting')),
-            "autorange":float(self.parser.get('sample2','autorange')),
-            "range":float(self.parser.get('sample2','range')),
-            "units":float(self.parser.get('sample2','units'))
+            "excitemode":int(self.parser.get('sample2','excitemode')),
+            "excitesetting":int(self.parser.get('sample2','excitesetting')),
+            "autorange":int(self.parser.get('sample2','autorange')),
+            "range":int(self.parser.get('sample2','range')),
+            "units":int(self.parser.get('sample2','units'))
         }
         #Timing
         self.timeConstants = {
