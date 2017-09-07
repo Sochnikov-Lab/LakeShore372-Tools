@@ -44,7 +44,7 @@ sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.mcthermo) #Set the filter prefs for the MC thermometer
 print("o  Filter Parameters SET")
 sleep(commandwaittime)
-LSHDev.Excite(LSHDev.mcthermo,1) #Sets excitation parameters for MC thermometer
+LSHDev.Excite(LSHDev.mcthermo) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
 sleep(commandwaittime)
 #sample1:
@@ -55,7 +55,7 @@ sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.sample1)
 print("o  Filter Parameters SET")
 sleep(commandwaittime)
-LSHDev.Excite(LSHDev.sample1,1) #Sets excitation parameters for MC thermometer
+LSHDev.Excite(LSHDev.sample1) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
 sleep(commandwaittime)
 #sample2:
@@ -66,12 +66,13 @@ sleep(commandwaittime)
 LSHDev.setFilterParams(LSHDev.sample2)
 print("o  Filter Parameters SET")
 sleep(commandwaittime)
-LSHDev.Excite(LSHDev.sample2,1) #Sets excitation parameters for MC thermometer
+LSHDev.Excite(LSHDev.sample2) #Sets excitation parameters for MC thermometer
 print("o  Excitation Parameters SET")
 print("============One Time Configuration Finished==============")
 
 #Open a file to write to, with a description given by the user at runtime.
-FileDescription = raw_input("What should we call this run's file? ")#Get user description for this run
+FileDescription = "Test" #Switch to below statement for full release
+#FileDescription = raw_input("What should we call this run's file? ")#Get user description for this run
 DataFileName = datetime.now().strftime('%Y%m%d-%H%M%S') + '_' + FileDescription + '.csv' #give it a dated filename
 LSHDataFile = open(DataFileName,'w') #Open the file
 LSHData = ls.LakeShore372Data(LSHDataFile) #Pass file to data handler class
