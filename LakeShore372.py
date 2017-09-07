@@ -216,8 +216,8 @@ class LakeShore372Data(object):
     def UpdateCSV(self,htrpc):
         self.DataFile.write(str(datetime.now().strftime('%Y%m%d%H%M%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + '\n')
     def UpdatePlot(self,sample1desc,sample2desc):
-        s1plt = self.ax.scatter(self.MCThermoK,self.Sample1R,c='b',label=sample1desc)
-        s2plt = self.ax.scatter(self.MCThermoK,self.Sample2R,c='r',label=sample2desc)
+        s1plt = self.ax.scatter(self.MCThermoK,self.Sample1R,c='b',s=5,label=sample1desc)
+        s2plt = self.ax.scatter(self.MCThermoK,self.Sample2R,c='r',s=5,label=sample2desc)
         self.ax.set_title("Resistances vs. Temperature")
         self.ax.set_xlabel("Temperature [K]")
         self.ax.set_ylabel("Resistance [$\Omega$]")
