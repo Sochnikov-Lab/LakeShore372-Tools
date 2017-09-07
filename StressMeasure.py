@@ -23,7 +23,7 @@ print("===========")
 
 
 #next, send one-time configuration over serial:
-commandwaittime = 1.0
+commandwaittime = 0.1
 
 print("=======Sending One Time Device Configuration======")
 sleep(commandwaittime)
@@ -81,6 +81,9 @@ LSHData = ls.LakeShore372Data(LSHDataFile) #Pass file to data handler class
 t_safety = 1 #Time to add to delays to allow the LakeShore372 harware to finish first
 i = 0 #step number
 currentpc = LSHDev.sampleheater["initpc"]
+print("Init HTR: " + str(LSHDev.sampleheater["initpc"]))
+print("Final HTR: " + str(LSHDev.sampleheater["finalpc"]))
+print("Step HTR: " + str(LSHDev.sampleheater["deltapc"]))
 while currentpc < LSHDev.sampleheater["finalpc"]:
     #Set Current
     currentpc = LSHDev.sampleheater["initpc"] + ((i)**(1.0/2.0)) * LSHDev.sampleheater["deltapc"]

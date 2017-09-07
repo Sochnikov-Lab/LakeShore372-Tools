@@ -30,9 +30,9 @@ class LakeShore372Device(object):
             "maxcurrent":float(self.parser.get('sampleheater','maxcurrent')),
             "range":float(self.parser.get('sampleheater','range')),
             "disp":int(self.parser.get('sampleheater','disp')),
-            "initpc":float(self.parser.get('sampleheater','initpc'))/100.0,
-            "finalpc":float(self.parser.get('sampleheater','finalpc'))/100.0,
-            "deltapc":float(self.parser.get('sampleheater','deltapc'))/100.0
+            "initpc":float(self.parser.get('sampleheater','initpc')),
+            "finalpc":float(self.parser.get('sampleheater','finalpc')),
+            "deltapc":float(self.parser.get('sampleheater','deltapc'))
         }
         #Scanner cfg
         self.scanner = {
