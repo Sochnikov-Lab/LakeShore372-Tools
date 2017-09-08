@@ -101,6 +101,8 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]+t_safety)
         #Scan to Temp Probe, Read Temp Probe T/R
+        while LSHDev.ReadCHStatus(LSHDev.mcthermo) != "000": #Wait for autoranging to complete
+            sleep(1)
         TempProbeT = LSHDev.ReadKelvin(LSHDev.mcthermo)
         print("o  Read Temperature: " + str(TempProbeT) + " K")
         sleep(0.25)
@@ -117,6 +119,8 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
 
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"]+t_safety)
+        while LSHDev.ReadCHStatus(LSHDev.sample1) != "000": #Wait for autoranging to complete
+            sleep(1)
         Sample1R = LSHDev.ReadResistance(LSHDev.sample1)
         print("o  Read Resistance: " + str(Sample1R) + " Ohms")
         LSHData.AppendSample1R(Sample1R)
@@ -129,6 +133,8 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
 
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"]+t_safety)
+        while LSHDev.ReadCHStatus(LSHDev.sample2) != "000": #Wait for autoranging to complete
+            sleep(1)
         Sample2R = LSHDev.ReadResistance(LSHDev.sample2)
         print("o  Read Resistance: " + str(Sample2R) + " Ohms")
         LSHData.AppendSample2R(Sample2R)
