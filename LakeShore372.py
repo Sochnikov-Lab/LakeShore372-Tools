@@ -87,7 +87,8 @@ class LakeShore372Device(object):
         #Timing
         self.timeConstants = {
             "t_therm":float(self.parser.get('timeconstants','t_therm')),
-            "t_switch":float(self.parser.get('timeconstants','t_switch'))
+            "t_switch":float(self.parser.get('timeconstants','t_switch')),
+            "t_maxARsleep":float(self.parser.get('timeconstants','t_maxARsleep'))
         }
     #Attempts to open serial instance
     def open(self):
@@ -127,11 +128,14 @@ class LakeShore372Device(object):
         return str(self.serIO.readline()).rstrip().lstrip()
     #Analog to INSET - Sets channel parameters / Enables channels
     def setCHParams(self,chdict,Enabled=1):
-        self.serIO.write(unicode('INSET' + str(chdict["channel"]) + ',' + str(Enabled) + ',' + str(chdict["t_dwell"]) + ',' + str(chdict["t_pause"]) + ',' + str(chdict["curvenumber"]) + ',' + str(chdict["tempcoeff"]) + '\r\n'))
+        self.serIO.write(unicode('INSET' + str(chdict["channel"]) + ',' + str(1) + ',' + str(chdict["t_dwell"]) + ',' + str(chdict["t_pause"]) + ',' + str(chdict["curvenumber"]) + ',' + str(chdict["tempcoeff"]) + '\r\n'))
         self.serIO.flush()
     #Analog to INTYPE - Sets excitation settings, and turns on if Enabled = 1
     def Excite(self,chdict):
         self.serIO.write(unicode('INTYPE' + str(chdict["channel"]) + ',' + str(chdict["excitemode"]) + ',' + str(chdict["excitesetting"]) + ',' + str(chdict["autorange"]) + ',' + str(chdict["range"]) + ',' + str(0) + ',' + str(chdict["units"]) + '\r\n'))
+        self.serIO.flush()
+    def ExciteOff(self,chdict):
+        self.serIO.write(unicode('INTYPE' + str(chdict["channel"]) + ',' + str(chdict["excitemode"]) + ',' + str(chdict["excitesetting"]) + ',' + str(chdict["autorange"]) + ',' + str(chdict["range"]) + ',' + str(1) + ',' + str(chdict["units"]) + '\r\n'))
         self.serIO.flush()
     #Analog to FILTER - Sets filter if Enabled = 1.
     def setFilterParams(self,chdict,Enabled=1):

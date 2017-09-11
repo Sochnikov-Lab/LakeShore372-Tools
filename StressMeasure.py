@@ -7,6 +7,52 @@ from datetime import datetime
 from configparser import ConfigParser
 import LakeShore372 as ls
 
+def AutorangeSleep1(chdict,maxsleeptime):
+    ARsleeptime = 0
+    while LSHDev.ReadCHStatus(chdict) != "000" and ARsleeptime < maxsleeptime: #Wait for autoranging to complete
+        sleep(1)
+        ARsleeptime += 1
+    if ARsleeptime >= maxsleeptime:
+        print("Slept maximum autorange time, resetting excitation.")
+        LSHDev.ExciteOff(chdict)
+        sleep(2)
+        print()
+        LSHDev.Excite(LSHDev.mcthermo)
+        sleep(2)
+        ARsleeptime = 0
+        while LSHDev.ReadCHStatus(chdict) != "000" and ARsleeptime < maxsleeptime: #Wait for autoranging to complete
+            sleep(1)
+            ARsleeptime += 1
+def AutorangeSleep2(chdict,maxsleeptime):
+    if LSHDev.ReadCHStatus(chdict) != "000":
+        LSHDev.setCHParams(chdict,0)
+        sleep(1)
+        LSHDev.ExciteOff(chdict)
+        sleep(2)
+        print()
+        LSHDev.setCHParams(chdict,1)
+        sleep(1)
+        LSHDev.Excite(LSHDev.mcthermo)
+        sleep(2)
+        ARsleeptime = 0
+        while LSHDev.ReadCHStatus(chdict) != "000" and ARsleeptime < maxsleeptime: #Wait for autoranging to complete
+            sleep(1)
+            ARsleeptime += 1
+        if ARsleeptime >= maxsleeptime:
+            print("Slept maximum autorange time, resetting excitation.")
+            LSHDev.ExciteOff(chdict)
+            sleep(2)
+            print()
+            LSHDev.Excite(LSHDev.mcthermo)
+            sleep(2)
+            ARsleeptime = 0
+            while LSHDev.ReadCHStatus(chdict) != "000" and ARsleeptime < maxsleeptime: #Wait for autoranging to complete
+                sleep(1)
+                ARsleeptime += 1
+
+
+
+
 print("===Debug===")
 ###Script###
 #Open up a serial connection after loading config file:
@@ -23,7 +69,7 @@ print("===========")
 
 
 #next, send one-time configuration over serial:
-commandwaittime = 0.1
+commandwaittime = 0.5
 
 print("=======Sending One Time Device Configuration======")
 sleep(commandwaittime)
@@ -78,16 +124,14 @@ LSHDataFile = open(DataFileName,'w') #Open the file
 LSHData = ls.LakeShore372Data(LSHDataFile) #Pass file to data handler class
 
 ##Main Loop:
-t_safety = 1 #Time to add to delays to allow the LakeShore372 harware to finish first
+t_safety = 2 #Time to add to delays to allow the LakeShore372 harware to finish first
 i = 0 #step number
 currentpc = LSHDev.sampleheater["initpc"]
-print("Init HTR: " + str(LSHDev.sampleheater["initpc"]))
-print("Final HTR: " + str(LSHDev.sampleheater["finalpc"]))
-print("Step HTR: " + str(LSHDev.sampleheater["deltapc"]))
 while currentpc < LSHDev.sampleheater["finalpc"]:
     #Set Current
     currentpc = LSHDev.sampleheater["initpc"] + ((i)**(1.0/2.0)) * LSHDev.sampleheater["deltapc"]
     LSHDev.SetSampleHeaterOut(currentpc)
+    print("**********New Heater Setting**********")
     print("Current Percentage:" + str(currentpc))
     #Wait Thermalization
     print("Sleeping for Thermalization: " + str(LSHDev.timeConstants["t_therm"]) + " seconds")
@@ -96,31 +140,29 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
     for measurement in range(0,LSHDev.scanner["scannerpasses"]):
         #MC Thermometer
         print(":Scanner: MC Thermometer:")
-        LSHDev.ScanTo(LSHDev.mcthermo)
         LSHDev.Excite(LSHDev.mcthermo)
+        sleep(1)
+        LSHDev.ScanTo(LSHDev.mcthermo)
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]+t_safety)
-        #Scan to Temp Probe, Read Temp Probe T/R
-        while LSHDev.ReadCHStatus(LSHDev.mcthermo) != "000": #Wait for autoranging to complete
-            sleep(1)
-        TempProbeT = LSHDev.ReadKelvin(LSHDev.mcthermo)
-        print("o  Read Temperature: " + str(TempProbeT) + " K")
-        sleep(0.25)
+        AutorangeSleep2(LSHDev.mcthermo,LSHDev.timeConstants["t_maxARsleep"])
         TempProbeR = LSHDev.ReadResistance(LSHDev.mcthermo)
         print("o  Read Resistance: " + str(TempProbeR) +" Ohms")
+        sleep(0.25)
+        TempProbeT = LSHDev.ReadKelvin(LSHDev.mcthermo)
+        print("o  Read Temperature: " + str(TempProbeT) + " K")
         LSHData.AppendMCThermoK(TempProbeT)
         LSHData.AppendMCThermoR(TempProbeR)
         print("o  Appended Data to arrays")
 
         #Sample 1
         print(":Scanner: Sample1:")
-        LSHDev.ScanTo(LSHDev.sample1)
         LSHDev.Excite(LSHDev.sample1)
-
+        sleep(1)
+        LSHDev.ScanTo(LSHDev.sample1)
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"]+t_safety)
-        while LSHDev.ReadCHStatus(LSHDev.sample1) != "000": #Wait for autoranging to complete
-            sleep(1)
+        AutorangeSleep2(LSHDev.sample1,LSHDev.timeConstants["t_maxARsleep"])
         Sample1R = LSHDev.ReadResistance(LSHDev.sample1)
         print("o  Read Resistance: " + str(Sample1R) + " Ohms")
         LSHData.AppendSample1R(Sample1R)
@@ -128,13 +170,12 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
 
         #Sample 2
         print(":Scanner: Sample2:")
-        LSHDev.ScanTo(LSHDev.sample2)
         LSHDev.Excite(LSHDev.sample2)
-
+        sleep(1)
+        LSHDev.ScanTo(LSHDev.sample2)
         print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"]+t_safety)
-        while LSHDev.ReadCHStatus(LSHDev.sample2) != "000": #Wait for autoranging to complete
-            sleep(1)
+        AutorangeSleep2(LSHDev.sample2,LSHDev.timeConstants["t_maxARsleep"])
         Sample2R = LSHDev.ReadResistance(LSHDev.sample2)
         print("o  Read Resistance: " + str(Sample2R) + " Ohms")
         LSHData.AppendSample2R(Sample2R)
