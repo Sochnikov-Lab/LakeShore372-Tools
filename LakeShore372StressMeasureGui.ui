@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
-    <height>646</height>
+    <width>823</width>
+    <height>419</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,191 +17,61 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>560</y>
-      <width>191</width>
-      <height>31</height>
+      <x>620</x>
+      <y>20</y>
+      <width>91</width>
+      <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Reads config.ini's contents into this window.</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
     <property name="text">
-     <string>Read Settings</string>
+     <string>Read
+INI File</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>600</y>
-      <width>191</width>
-      <height>31</height>
+      <x>720</x>
+      <y>20</y>
+      <width>91</width>
+      <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Writes what is seen in this window to the config.ini file. 
+ Must be done before starting measurement routine.</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
     </property>
     <property name="text">
-     <string>Write Settings</string>
+     <string>Write
+INI File</string>
     </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>191</width>
-      <height>371</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Heater</string>
-    </property>
-    <widget class="QWidget" name="gridLayoutWidget_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>171</width>
-       <height>338</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="11" column="1">
-       <widget class="QLineEdit" name="lineEdit_9"/>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="spinBox"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="spinBox_2"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>Channel</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QComboBox" name="comboBox_4"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Curve #</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox_2"/>
-      </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="label_17">
-        <property name="text">
-         <string>Filter Window</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>T. Coeff.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="comboBox_3"/>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_14">
-        <property name="text">
-         <string>Exc. Mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_12">
-        <property name="text">
-         <string>Autorange</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="label_18">
-        <property name="text">
-         <string>Dwell Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_15">
-        <property name="text">
-         <string>Exc. Current</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="label_19">
-        <property name="text">
-         <string>Pause Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="0">
-       <widget class="QLabel" name="label_20">
-        <property name="text">
-         <string>Settle Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_16">
-        <property name="text">
-         <string>Exc. Volts</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_21">
-        <property name="text">
-         <string>Range</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QComboBox" name="comboBox_6"/>
-      </item>
-      <item row="5" column="1">
-       <widget class="QComboBox" name="comboBox_5"/>
-      </item>
-      <item row="7" column="1">
-       <widget class="QComboBox" name="comboBox_7"/>
-      </item>
-      <item row="8" column="1">
-       <widget class="QLineEdit" name="lineEdit_6"/>
-      </item>
-      <item row="9" column="1">
-       <widget class="QLineEdit" name="lineEdit_7"/>
-      </item>
-      <item row="10" column="1">
-       <widget class="QLineEdit" name="lineEdit_8"/>
-      </item>
-      <item row="12" column="1">
-       <widget class="QComboBox" name="comboBox_8"/>
-      </item>
-      <item row="12" column="0">
-       <widget class="QLabel" name="label_22">
-        <property name="text">
-         <string>Units</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>390</y>
+      <x>220</x>
+      <y>10</y>
       <width>391</width>
-      <height>161</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="title">
@@ -334,466 +204,817 @@
       </item>
      </layout>
     </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>281</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_66">
+        <property name="text">
+         <string>Heater Steps from:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_3">
+        <property name="text">
+         <string>Ramp</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_4">
+        <property name="text">
+         <string>&quot;heatervals.txt&quot;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>600</y>
+      <x>620</x>
+      <y>150</y>
       <width>191</width>
-      <height>31</height>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Stops the measurement routine</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
     </property>
     <property name="text">
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>10</y>
-      <width>191</width>
-      <height>371</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Sample 1</string>
-    </property>
-    <widget class="QWidget" name="gridLayoutWidget_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>171</width>
-       <height>338</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="11" column="1">
-       <widget class="QLineEdit" name="lineEdit_14"/>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="spinBox_5"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="spinBox_6"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_36">
-        <property name="text">
-         <string>Channel</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QComboBox" name="comboBox_16"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_37">
-        <property name="text">
-         <string>Curve #</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox_17"/>
-      </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="label_38">
-        <property name="text">
-         <string>Filter Window</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_39">
-        <property name="text">
-         <string>T. Coeff.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="comboBox_18"/>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_40">
-        <property name="text">
-         <string>Exc. Mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_41">
-        <property name="text">
-         <string>Autorange</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="label_42">
-        <property name="text">
-         <string>Dwell Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_43">
-        <property name="text">
-         <string>Exc. Current</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="label_44">
-        <property name="text">
-         <string>Pause Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="0">
-       <widget class="QLabel" name="label_45">
-        <property name="text">
-         <string>Settle Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_46">
-        <property name="text">
-         <string>Exc. Volts</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_47">
-        <property name="text">
-         <string>Range</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QComboBox" name="comboBox_19"/>
-      </item>
-      <item row="5" column="1">
-       <widget class="QComboBox" name="comboBox_20"/>
-      </item>
-      <item row="7" column="1">
-       <widget class="QComboBox" name="comboBox_21"/>
-      </item>
-      <item row="8" column="1">
-       <widget class="QLineEdit" name="lineEdit_15"/>
-      </item>
-      <item row="9" column="1">
-       <widget class="QLineEdit" name="lineEdit_16"/>
-      </item>
-      <item row="10" column="1">
-       <widget class="QLineEdit" name="lineEdit_17"/>
-      </item>
-      <item row="12" column="1">
-       <widget class="QComboBox" name="comboBox_22"/>
-      </item>
-      <item row="12" column="0">
-       <widget class="QLabel" name="label_48">
-        <property name="text">
-         <string>Units</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_5">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>10</y>
-      <width>191</width>
-      <height>371</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Sample2</string>
-    </property>
-    <widget class="QWidget" name="gridLayoutWidget_5">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>171</width>
-       <height>338</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="11" column="1">
-       <widget class="QLineEdit" name="lineEdit_18"/>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="spinBox_7"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="spinBox_8"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_49">
-        <property name="text">
-         <string>Channel</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QComboBox" name="comboBox_23"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_50">
-        <property name="text">
-         <string>Curve #</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox_24"/>
-      </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="label_51">
-        <property name="text">
-         <string>Filter Window</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_52">
-        <property name="text">
-         <string>T. Coeff.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="comboBox_25"/>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_53">
-        <property name="text">
-         <string>Exc. Mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_54">
-        <property name="text">
-         <string>Autorange</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="label_55">
-        <property name="text">
-         <string>Dwell Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_56">
-        <property name="text">
-         <string>Exc. Current</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="label_57">
-        <property name="text">
-         <string>Pause Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="0">
-       <widget class="QLabel" name="label_58">
-        <property name="text">
-         <string>Settle Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_59">
-        <property name="text">
-         <string>Exc. Volts</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_60">
-        <property name="text">
-         <string>Range</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QComboBox" name="comboBox_26"/>
-      </item>
-      <item row="5" column="1">
-       <widget class="QComboBox" name="comboBox_27"/>
-      </item>
-      <item row="7" column="1">
-       <widget class="QComboBox" name="comboBox_28"/>
-      </item>
-      <item row="8" column="1">
-       <widget class="QLineEdit" name="lineEdit_19"/>
-      </item>
-      <item row="9" column="1">
-       <widget class="QLineEdit" name="lineEdit_20"/>
-      </item>
-      <item row="10" column="1">
-       <widget class="QLineEdit" name="lineEdit_21"/>
-      </item>
-      <item row="12" column="1">
-       <widget class="QComboBox" name="comboBox_29"/>
-      </item>
-      <item row="12" column="0">
-       <widget class="QLabel" name="label_61">
-        <property name="text">
-         <string>Units</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget_6">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>560</y>
-      <width>191</width>
-      <height>82</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_6">
-     <item row="3" column="0">
-      <widget class="QPushButton" name="buttsp_conn">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>Open</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="coboxsp_prt">
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentText">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_13">
-       <property name="text">
-        <string>Serial Port:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lesp_baud">
-       <property name="inputMask">
-        <string/>
-       </property>
-       <property name="text">
-        <string>115200</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_11">
-       <property name="text">
-        <string>Baud Rate:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QPushButton" name="buttsp_disconn">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>390</y>
-      <width>191</width>
-      <height>161</height>
+      <x>220</x>
+      <y>310</y>
+      <width>591</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="title">
      <string>Status</string>
     </property>
-    <widget class="QWidget" name="gridLayoutWidget_7">
+    <widget class="QWidget" name="horizontalLayoutWidget_4">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>171</width>
-       <height>131</height>
+       <width>571</width>
+       <height>31</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="gridLayout_7">
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_65">
-        <property name="text">
-         <string>Est. Time Left (min)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_22"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_23"/>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="lineEdit_24"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_62">
-        <property name="text">
-         <string>Meas. # for Htr%</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
        <widget class="QLabel" name="label_64">
         <property name="text">
          <string>Htr %</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_22"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_62">
+        <property name="text">
+         <string>Meas. # for Htr%</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_23"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_65">
+        <property name="text">
+         <string>Est. Time Left (min)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_24"/>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
+    <zorder>pushButton</zorder>
+    <zorder>horizontalLayoutWidget_4</zorder>
    </widget>
    <widget class="QPushButton" name="pushButton_4">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>560</y>
+      <x>620</x>
+      <y>90</y>
       <width>191</width>
-      <height>31</height>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Starts the measurement routine</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
     </property>
     <property name="text">
      <string>Start</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_6">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>200</y>
+      <width>591</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Connection &amp;&amp; Other Settings</string>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_6">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>571</width>
+       <height>82</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="0" column="3">
+       <widget class="QLineEdit" name="lineEdit_25"/>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="label_69">
+        <property name="text">
+         <string>Sample 2 Desc::</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="buttsp_conn">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Open</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="buttsp_disconn">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Close</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="coboxsp_prt">
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+        <property name="currentText">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Serial Port:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lesp_baud">
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>115200</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Baud Rate:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_68">
+        <property name="text">
+         <string>Sample 1 Desc:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QLineEdit" name="lineEdit_27">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLineEdit" name="lineEdit_26">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLabel" name="label_23">
+        <property name="text">
+         <string>Thermalization Time:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_67">
+        <property name="text">
+         <string>File Description:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QLabel" name="label_24">
+        <property name="text">
+         <string>Switching Time:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QLineEdit" name="lineEdit_10"/>
+      </item>
+      <item row="1" column="5">
+       <widget class="QLineEdit" name="lineEdit_11"/>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_70">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>370</y>
+      <width>591</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This application serves as a front end for configuring and starting measurements on the Lake Shore Model 372.&lt;br/&gt;To launch a measurement, press &amp;quot;Start&amp;quot;. This reads the &amp;quot;config.ini&amp;quot; file rather than this window's contents, so if you make &lt;br/&gt;any changes in the window, you will want to write them first by pressing &amp;quot;Write INI file&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>201</width>
+      <height>401</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Heater</string>
+     </attribute>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>350</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Excitation Enabled</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>171</width>
+        <height>334</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="11" column="1">
+        <widget class="QLineEdit" name="lineEdit_9"/>
+       </item>
+       <item row="12" column="1">
+        <widget class="QComboBox" name="comboBox_8"/>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_22">
+         <property name="text">
+          <string>Units</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="spinBox"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spinBox_2"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Channel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="comboBox_4"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Curve #</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="comboBox_2"/>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>Filter Window</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>T. Coeff.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="comboBox_3"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Exc. Mode</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Autorange</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Dwell Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>Exc. Current</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_19">
+         <property name="text">
+          <string>Pause Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>Settle Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>Exc. Volts</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_21">
+         <property name="text">
+          <string>Range</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QComboBox" name="comboBox_6"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QComboBox" name="comboBox_5"/>
+       </item>
+       <item row="7" column="1">
+        <widget class="QComboBox" name="comboBox_7"/>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLineEdit" name="lineEdit_6"/>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLineEdit" name="lineEdit_7"/>
+       </item>
+       <item row="10" column="1">
+        <widget class="QLineEdit" name="lineEdit_8"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Sample 1</string>
+     </attribute>
+     <widget class="QCheckBox" name="checkBox_2">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>350</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Excitation Enabled</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>171</width>
+        <height>334</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="11" column="1">
+        <widget class="QLineEdit" name="lineEdit_14"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="spinBox_5"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spinBox_6"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_36">
+         <property name="text">
+          <string>Channel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="comboBox_16"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_37">
+         <property name="text">
+          <string>Curve #</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="comboBox_17"/>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_38">
+         <property name="text">
+          <string>Filter Window</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_39">
+         <property name="text">
+          <string>T. Coeff.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="comboBox_18"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_40">
+         <property name="text">
+          <string>Exc. Mode</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_41">
+         <property name="text">
+          <string>Autorange</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_42">
+         <property name="text">
+          <string>Dwell Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_43">
+         <property name="text">
+          <string>Exc. Current</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_44">
+         <property name="text">
+          <string>Pause Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_45">
+         <property name="text">
+          <string>Settle Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_46">
+         <property name="text">
+          <string>Exc. Volts</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_47">
+         <property name="text">
+          <string>Range</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QComboBox" name="comboBox_19"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QComboBox" name="comboBox_20"/>
+       </item>
+       <item row="7" column="1">
+        <widget class="QComboBox" name="comboBox_21"/>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLineEdit" name="lineEdit_15"/>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLineEdit" name="lineEdit_16"/>
+       </item>
+       <item row="10" column="1">
+        <widget class="QLineEdit" name="lineEdit_17"/>
+       </item>
+       <item row="12" column="1">
+        <widget class="QComboBox" name="comboBox_22"/>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_48">
+         <property name="text">
+          <string>Units</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Sample 2</string>
+     </attribute>
+     <widget class="QCheckBox" name="checkBox_3">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>350</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Excitation Enabled</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>171</width>
+        <height>334</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="11" column="1">
+        <widget class="QLineEdit" name="lineEdit_18"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="spinBox_7"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spinBox_8"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_49">
+         <property name="text">
+          <string>Channel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="comboBox_23"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_50">
+         <property name="text">
+          <string>Curve #</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="comboBox_24"/>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_51">
+         <property name="text">
+          <string>Filter Window</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_52">
+         <property name="text">
+          <string>T. Coeff.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="comboBox_25"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_53">
+         <property name="text">
+          <string>Exc. Mode</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_54">
+         <property name="text">
+          <string>Autorange</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_55">
+         <property name="text">
+          <string>Dwell Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_56">
+         <property name="text">
+          <string>Exc. Current</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_57">
+         <property name="text">
+          <string>Pause Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_58">
+         <property name="text">
+          <string>Settle Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_59">
+         <property name="text">
+          <string>Exc. Volts</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_60">
+         <property name="text">
+          <string>Range</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QComboBox" name="comboBox_26"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QComboBox" name="comboBox_27"/>
+       </item>
+       <item row="7" column="1">
+        <widget class="QComboBox" name="comboBox_28"/>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLineEdit" name="lineEdit_19"/>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLineEdit" name="lineEdit_20"/>
+       </item>
+       <item row="10" column="1">
+        <widget class="QLineEdit" name="lineEdit_21"/>
+       </item>
+       <item row="12" column="1">
+        <widget class="QComboBox" name="comboBox_29"/>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_61">
+         <property name="text">
+          <string>Units</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>
