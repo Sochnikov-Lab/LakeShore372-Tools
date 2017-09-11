@@ -84,6 +84,21 @@ class LakeShore372Device(object):
             "range":int(self.parser.get('sample2','range')),
             "units":int(self.parser.get('sample2','units'))
         }
+        self.sample3 = {
+            "channel":int(self.parser.get('sample3','channel')),
+            "curvenumber":int(self.parser.get('sample3','curvenumber')),
+            "tempcoeff":int(self.parser.get('sample3','tempcoeff')),
+            "filterwindow":int(self.parser.get('sample3','filterwindow')),
+            "description":str(self.parser.get('sample3','description')),
+            "t_dwell":float(self.parser.get('sample3','t_dwell')),
+            "t_pause":float(self.parser.get('sample3','t_pause')),
+            "t_settle":float(self.parser.get('sample3','t_settle')),
+            "excitemode":int(self.parser.get('sample3','excitemode')),
+            "excitesetting":int(self.parser.get('sample3','excitesetting')),
+            "autorange":int(self.parser.get('sample3','autorange')),
+            "range":int(self.parser.get('sample3','range')),
+            "units":int(self.parser.get('sample3','units'))
+        }
         #Timing
         self.timeConstants = {
             "t_therm":float(self.parser.get('timeconstants','t_therm')),
@@ -111,9 +126,9 @@ class LakeShore372Device(object):
             #self.ID = str(self.serIO.readline()).rstrip().lstrip()
 
             #Turn off all channels:
-            for i in range(0,16):
-                self.serIO.write(unicode('INSET' + str(i) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(1) + '\r\n'))
-                sleep(0.25)
+            #for i in range(0,16):
+            #    self.serIO.write(unicode('INSET' + str(i) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(1) + '\r\n'))
+            #    sleep(0.25)
         except serial.SerialException:
             print("**Failed to open serial port**")
     #Closes serial port
@@ -180,7 +195,7 @@ class LakeShore372Device(object):
 
 #Data Handler Class (Saves/Plots data)
 class LakeShore372Data(object):
-    def __init__(self,DataFile):
+    def __init__(self,DataFile,sample1desc,sample2desc,sample3desc):
         #Lists of timestamps / Heater percents / Resistances / Temperatures
         self.timestamp = []
         self.htrpc = []
@@ -188,6 +203,7 @@ class LakeShore372Data(object):
         self.MCThermoK = []
         self.Sample1R = []
         self.Sample2R = []
+        self.Sample3R = []
         #Last Read Value:
         self.timesamp = ""
         self.htrpcL = 0.0
@@ -195,6 +211,7 @@ class LakeShore372Data(object):
         self.MCThermoKL = 0.0
         self.Sample1RL = 0.0
         self.Sample2RL = 0.0
+        self.Sample3RL = 0.0
         #CSV file
         self.DataFile = DataFile
         #plot
@@ -203,7 +220,7 @@ class LakeShore372Data(object):
         plt.ion() #Interactive Plotting
         self.LegendApplied = False
         #Write Header:
-        self.DataFile.write("time,heater%,MCTemp,MCResist,1Resistance,2Resistance\n")
+        self.DataFile.write("time,heater%,MCTemp,MCResist,"+sample1desc+","+ sample2desc+","+ sample3desc+"\n")
 
     def AppendMCThermoR(self,RReading):
         self.MCThermoRL = RReading
@@ -217,11 +234,15 @@ class LakeShore372Data(object):
     def AppendSample2R(self,RReading):
         self.Sample2RL = RReading
         self.Sample2R.append(RReading)
+    def AppendSample3R(self,RReading):
+        self.Sample3RL = RReading
+        self.Sample3R.append(RReading)
     def UpdateCSV(self,htrpc):
-        self.DataFile.write(str(datetime.now().strftime('%Y%m%d%H%M%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + '\n')
-    def UpdatePlot(self,sample1desc,sample2desc):
-        s1plt = self.ax.scatter(self.MCThermoK,self.Sample1R,c='b',s=5,label=sample1desc)
+        self.DataFile.write(str(datetime.now().strftime('%Y%m%d%H%M%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + ',' + str(self.Sample3RL) + '\n')
+    def UpdatePlot(self,sample1desc,sample2desc,sample3desc):
+        s1plt = self.ax.scatter(self.MCThermoK,self.Sample1R,c='k',s=5,label=sample1desc)
         s2plt = self.ax.scatter(self.MCThermoK,self.Sample2R,c='r',s=5,label=sample2desc)
+        s3plt = self.ax.scatter(self.MCThermoK,self.Sample3R,c='b',s=5,label=sample3desc)
         self.ax.set_title("Resistances vs. Temperature")
         self.ax.set_xlabel("Temperature [K]")
         self.ax.set_ylabel("Resistance [$\Omega$]")
