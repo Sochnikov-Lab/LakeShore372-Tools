@@ -60,12 +60,8 @@ while currentpc > LSHDev.sampleheater["finalpc"]:
     #Set Current
     #currentpc = LSHDev.sampleheater["initpc"] + ((i)**(1.0/2.0)) * LSHDev.sampleheater["deltapc"]
     currentpc = LSHDev.sampleheater["initpc"] + i * LSHDev.sampleheater["deltapc"]
-
-
-
     LSHDev.SetSampleHeaterOut(currentpc)
     LSHDev.HeaterOn()
-
 
     print("**********New Heater Setting**********")
     print("Current Percentage:" + str(currentpc))
@@ -178,6 +174,24 @@ while currentpc > LSHDev.sampleheater["finalpc"]:
 
     ##Loop Back
     i = i + 1
+
+#Final reading of MC Thermometer (To provide for interpolation later)
+print(":Scanner: MC Thermometer:")
+sleep(1)
+LSHDev.ScanTo(LSHDev.mcthermo)
+print("o  Sleeping for switch/filter settle/0.5*dwell: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"] + LSHDev.mcthermo["t_dwell"]) + " seconds")
+sleepprogbar(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]+0.5*LSHDev.mcthermo["t_dwell"])
+TempProbeR = LSHDev.ReadResistance(LSHDev.mcthermo)
+print("o  Read Resistance: " + str(TempProbeR) +" Ohms")
+sleep(0.25)
+TempProbeT = LSHDev.ReadKelvin(LSHDev.mcthermo)
+print("o  Read Temperature: " + str(TempProbeT) + " K")
+LSHData.AppendMCThermoK(TempProbeT)
+LSHData.AppendMCThermoR(TempProbeR)
+print("o  Appended Data to arrays")
+print("o  Sleeping for 0.5*dwell: " + str(0.5*LSHDev.mcthermo["t_dwell"]) + " seconds")
+sleepprogbar(0.5*LSHDev.mcthermo["t_dwell"])
+LSHData.UpdateCSV_MCT(currentpc)
 
 #Turn off heater:
 LSHDev.SetSampleHeaterOut(0.0)

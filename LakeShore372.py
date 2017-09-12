@@ -305,6 +305,22 @@ class LakeShore372Data(object):
                 sleep(10)
                 print("**FileIO Error. Is the file currently open in another application? (Attempt " + str(attempts+1) + " of 3)**")
                 attempts += 1
+    def UpdateCSV_MCT(self,htrpc):
+        success = False
+        attempts = 0
+        print("o  Attempting to Save CSV")
+        while success == False and attempts < 3:
+            try:
+                if self.DataFile.closed == True:
+                    self.DataFile = open(self.DataFileName,'a')
+                self.DataFile.write(str(datetime.now().strftime('%Y/%m/%d')) + ',' + str(datetime.now().strftime('%H:%M:%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' + '' + ',' + '' + ',' + '' + '\n')
+                self.DataFile.close() #Close to prevent errors to be proactive about corruption
+                print("o  Saved CSV")
+                success = True
+            except IOError:
+                sleep(10)
+                print("**FileIO Error. Is the file currently open in another application? (Attempt " + str(attempts+1) + " of 3)**")
+                attempts += 1
     def UpdateCSV_S1(self,htrpc):
         success = False
         attempts = 0
