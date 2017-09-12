@@ -135,13 +135,10 @@ while currentpc > LSHDev.sampleheater["finalpc"]:
         sleep(0.5*LSHDev.sample2["t_dwell"])
 
         #Update CSV
-        print("o  Attempting to Save CSV")
         LSHData.UpdateCSV(currentpc)
-        print("o  Saved CSV")
-
-        LSHData.UpdatePlot(LSHDev.sample1["description"],LSHDev.sample2["description"],LSHDev.sample3["description"])
-        print("It should be safe to exit for the next 2 seconds: CTRL-C to exit")
-        sleep(2)
+        #LSHData.UpdatePlot(LSHDev.sample1["description"],LSHDev.sample2["description"],LSHDev.sample3["description"])
+        #print("It should be safe to exit for the next 2 seconds: CTRL-C to exit")
+        #sleep(2)
 
     ##Loop Back
     i = i + 1

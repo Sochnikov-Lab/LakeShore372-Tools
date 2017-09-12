@@ -267,6 +267,7 @@ class LakeShore372Data(object):
         self.DataFileName = DataFile.name
         #plot
         self.pltfig = plt.figure()
+        plt.grid() #Turns on gridlines
         self.ax = plt.gca()
         plt.ion() #Interactive Plotting
         self.LegendApplied = False
@@ -291,28 +292,30 @@ class LakeShore372Data(object):
     def UpdateCSV(self,htrpc):
         success = False
         attempts = 0
+        print("o  Attempting to Save CSV")
         while success == False and attempts < 3:
             try:
                 if self.DataFile.closed == True:
                     self.DataFile = open(self.DataFileName,'a')
                 self.DataFile.write(str(datetime.now().strftime('%Y/%m/%d')) + ',' + str(datetime.now().strftime('%H:%M:%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + ',' + str(self.Sample3RL) + '\n')
                 self.DataFile.close() #Close to prevent errors to be proactive about corruption
+                print("o  Saved CSV")
                 success = True
             except IOError:
                 sleep(10)
                 print("**FileIO Error. Is the file currently open in another application? (Attempt " + str(attempts+1) + " of 3)**")
                 attempts += 1
 
+
     def UpdatePlot(self,sample1desc,sample2desc,sample3desc):
+        plt.cla()
         s1plt = self.ax.scatter(self.MCThermoK,self.Sample1R,c='k',s=5,label=sample1desc)
         s2plt = self.ax.scatter(self.MCThermoK,self.Sample2R,c='r',s=5,label=sample2desc)
         s3plt = self.ax.scatter(self.MCThermoK,self.Sample3R,c='b',s=5,label=sample3desc)
         self.ax.set_title("Resistances vs. Temperature")
         self.ax.set_xlabel("Temperature [K]")
         self.ax.set_ylabel("Resistance [$\Omega$]")
-        if self.LegendApplied == False:
-            self.ax.legend()
-            self.LegendApplied = True
+        self.ax.legend()
 
         plt.pause(0.05)
         print("Plot Updated")
