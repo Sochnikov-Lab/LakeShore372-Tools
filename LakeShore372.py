@@ -300,8 +300,8 @@ class LakeShore372Data(object):
                 success = True
             except IOError:
                 sleep(10)
-                print("**FileIO Error. Is the file currently open in another application? (Attempt " + str(i+1) + " of 3)**")
-                i += 1
+                print("**FileIO Error. Is the file currently open in another application? (Attempt " + str(attempts+1) + " of 3)**")
+                attempts += 1
 
     def UpdatePlot(self,sample1desc,sample2desc,sample3desc):
         s1plt = self.ax.scatter(self.MCThermoK,self.Sample1R,c='k',s=5,label=sample1desc)
