@@ -35,26 +35,42 @@ print("===========")
 LSHDev.SetSampleHeaterRange(LSHDev.sampleheater)
 print("o  Heater Range SET")
 sleep(0.5)
-LSHDev.SetSampleHeaterOut(0.0)
-LSHDev.HeaterOn()
-print("o  Heater Circuit Turned On, heater set to 0.0pc for safety reasons")
 
+LSHDev.HeaterOn()
+LSHDev.SetSampleHeaterOut(0.35)
+sleep(0.05)
+LSHDev.SetSampleHeaterOut(0.35)
+
+
+
+print("o  Heater Circuit Turned On, heater set to 0.0pc for safety reasons")
+print("Number format example: "+"{:.3f}".format(.35))
+ht_check=LSHDev.ReadSampleHeater()
+sleep(0.05)
+print("Heater is confirmed to be set to:" + ht_check)
 print("============One Time Configuration Finished==============")
 
 
 
 ##Main Loop:
-t_safety = 2 #Time to add to delays to allow the LakeShore372 harware to finish first
+t_safety = 7 #Time to add to delays to allow the LakeShore372 harware to finish first
 i = 0 #step number
 currentpc = LSHDev.sampleheater["initpc"]
-while currentpc < LSHDev.sampleheater["finalpc"]:
+while currentpc > LSHDev.sampleheater["finalpc"]:
     #Set Current
     #currentpc = LSHDev.sampleheater["initpc"] + ((i)**(1.0/2.0)) * LSHDev.sampleheater["deltapc"]
     currentpc = LSHDev.sampleheater["initpc"] + i * LSHDev.sampleheater["deltapc"]
 
+
+
     LSHDev.SetSampleHeaterOut(currentpc)
+    LSHDev.HeaterOn()
+
+
     print("**********New Heater Setting**********")
     print("Current Percentage:" + str(currentpc))
+    ht_check=LSHDev.ReadSampleHeater()
+    print("Heater is confirmed to be set to:" + ht_check)
     #Wait Thermalization
     print("Sleeping for Thermalization: " + str(LSHDev.timeConstants["t_therm"]) + " seconds")
     sleep(LSHDev.timeConstants["t_therm"]+t_safety)
@@ -64,7 +80,7 @@ while currentpc < LSHDev.sampleheater["finalpc"]:
         print(":Scanner: MC Thermometer:")
         sleep(1)
         LSHDev.ScanTo(LSHDev.mcthermo)
-        print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + " seconds")
+        print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + "+ seconds")
         sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]+t_safety)
         TempProbeR = LSHDev.ReadResistance(LSHDev.mcthermo)
         print("o  Read Resistance: " + str(TempProbeR) +" Ohms")

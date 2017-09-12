@@ -118,6 +118,7 @@ class LakeShore372Device(object):
             self.ser.dsrdtr = False #Turn off hardware DSR/DTR flow control
 
             self.ser.open()
+            sleep(.05)
 
 
             #Read ID from Serial Port:
@@ -138,60 +139,109 @@ class LakeShore372Device(object):
         except serial.SerialException:
             print("**Failed to close serial port**")
     def getDevID(self):
+        sleep(0.1)
         self.serIO.write(unicode('*IDN?\r\n'))
+        sleep(0.1)
         self.serIO.flush()
+        slppe(0.05)
         return str(self.serIO.readline()).rstrip().lstrip()
     #Analog to INSET - Sets channel parameters / Enables channels
     def setCHParams(self,chdict,Enabled=1):
+        sleep(0.05)
         self.serIO.write(unicode('INSET' + str(chdict["channel"]) + ',' + str(1) + ',' + str(chdict["t_dwell"]) + ',' + str(chdict["t_pause"]) + ',' + str(chdict["curvenumber"]) + ',' + str(chdict["tempcoeff"]) + '\r\n'))
+        sleep(0.05)
         self.serIO.flush()
+        sleep(0.05)
     #Analog to INTYPE - Sets excitation settings, and turns on if Enabled = 1
     def Excite(self,chdict):
+        sleep(0.05)
         self.serIO.write(unicode('INTYPE' + str(chdict["channel"]) + ',' + str(chdict["excitemode"]) + ',' + str(chdict["excitesetting"]) + ',' + str(chdict["autorange"]) + ',' + str(chdict["range"]) + ',' + str(0) + ',' + str(chdict["units"]) + '\r\n'))
+        sleep(0.05)
         self.serIO.flush()
     def ExciteOff(self,chdict):
+        sleep(0.05)
         self.serIO.write(unicode('INTYPE' + str(chdict["channel"]) + ',' + str(chdict["excitemode"]) + ',' + str(chdict["excitesetting"]) + ',' + str(chdict["autorange"]) + ',' + str(chdict["range"]) + ',' + str(1) + ',' + str(chdict["units"]) + '\r\n'))
+        sleep(0.05)
         self.serIO.flush()
     #Analog to FILTER - Sets filter if Enabled = 1.
     def setFilterParams(self,chdict,Enabled=1):
+        sleep(0.05)
         self.serIO.write(unicode('FILTER' + str(chdict["channel"]) + ',' + str(Enabled) + ',' + str(chdict["t_settle"]) + ',' + str(chdict["filterwindow"]) + '\r\n'))
+        sleep(0.05)
         self.serIO.flush()
     #Analog to RDGST? - Returns status for given channel
     def ReadCHStatus(self,chdict):
+        sleep(.1)
         self.serIO.write(unicode('RDGST?' + str(chdict["channel"]) + '\r\n'))
+        sleep(0.1)
         self.serIO.flush()
+        sleep(0.1)
         return str(self.serIO.readline()).rstrip().lstrip()
     #Analog to RDGR? - Returns resistance for given channel
     def ReadResistance(self,chdict):
+        sleep(0.1)
         self.serIO.write(unicode('RDGR?' + str(chdict["channel"]) + '\r\n'))
+        sleep(0.1)
         self.serIO.flush()
+        sleep(0.1)
         return float(str(self.serIO.readline()).rstrip().lstrip())
     #Analog to RDGK? - Returns kelvin temperature for given channel
     def ReadKelvin(self,chdict):
+        sleep(0.1)
         self.serIO.write(unicode('RDGK?' + str(chdict["channel"]) + '\r\n'))
+        sleep(0.1)
         self.serIO.flush()
         return float(self.serIO.readline())
         #return float(str(self.serIO.readline()).rstrip().lstrip())
     def ScanTo(self,chdict,AUTOSCAN=0):
+        sleep(0.1)
         self.serIO.write(unicode('SCAN' + str(chdict["channel"]) + ',' + str(AUTOSCAN) + '\r\n'))
+        sleep(0.1)
         self.serIO.flush()
         #return float(str(self.serIO.readline()).rstrip().lstrip())
     def HeaterOn(self):
+        sleep(0.1)
         self.serIO.write(unicode('OUTMODE0,2,16,0,0,5\r\n'))
+        sleep(0.1)
         self.serIO.flush()
     def HeaterOff(self):
+        sleep(0.1)
         self.serIO.write(unicode('OUTMODE0,0,16,0,0,5\r\n'))
+        sleep(0.1)
         self.serIO.flush()
     def SetSampleHeaterCurrent(self,htrdict):
+        sleep(0.1)
         self.serIO.write(unicode('HTRSET0,' + str(htrdict["resistance"]) + ',0,' + str(htrdict["maxcurrent"]) + ',' + str(htrdict["disp"]) + '\r\n'))
+        sleep(0.1)
         self.serIO.flush()
+        sleep(0.1)
         #return float(str(self.serIO.readline()).rstrip().lstrip())
     def SetSampleHeaterRange(self,htrdict):
+        sleep(0.1)
         self.serIO.write(unicode('RANGE0,' + str(htrdict["range"]) + '\r\n'))
+        sleep(0.1)
         self.serIO.flush()
+        sleep(0.1)
     def SetSampleHeaterOut(self,htrpc):
-        self.serIO.write(unicode('MOUT,' + str(htrpc) + '\r\n'))
+        sleep(0.1)
         self.serIO.flush()
+        sleep(0.1)
+        self.serIO.write(unicode('MOUT0, ' + "{:.2f}".format(htrpc) + '\r\n'))
+        sleep(.1)
+        self.serIO.flush()
+        #str(self.serIO.readline())
+        sleep(.1)
+        self.serIO.flush()
+        sleep(0.1)
+    def ReadSampleHeater(self):
+        sleep(0.1)
+        self.serIO.flush()
+        sleep(0.1)
+        self.serIO.write(unicode('MOUT? 0' + '\r\n'))
+        sleep(.1)
+        self.serIO.flush()
+        return str(self.serIO.readline())
+
 
 #Data Handler Class (Saves/Plots data)
 class LakeShore372Data(object):
