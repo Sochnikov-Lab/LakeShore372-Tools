@@ -264,19 +264,20 @@ class LakeShore372Data(object):
         self.Sample3RL = 0.0
         #CSV file
         self.DataFile = DataFile
+        self.DataFileName = DataFile.name
         #plot
         self.pltfig = plt.figure()
         self.ax = plt.gca()
         plt.ion() #Interactive Plotting
         self.LegendApplied = False
         #Write Header:
-        self.DataFile.write("time,heater%,MCTemp,MCResist,"+sample1desc+","+ sample2desc+","+ sample3desc+"\n")
+        self.DataFile.write("date,time,heater%,MCTemp,MCResist,"+sample1desc+","+ sample2desc+","+ sample3desc+"\n")
 
     def AppendMCThermoR(self,RReading):
         self.MCThermoRL = RReading
         self.MCThermoR.append(RReading)
     def AppendMCThermoK(self,KReading):
-        self.MCThermoRK = KReading
+        self.MCThermoKL = KReading
         self.MCThermoK.append(KReading)
     def AppendSample1R(self,RReading):
         self.Sample1RL = RReading
@@ -288,7 +289,20 @@ class LakeShore372Data(object):
         self.Sample3RL = RReading
         self.Sample3R.append(RReading)
     def UpdateCSV(self,htrpc):
-        self.DataFile.write(str(datetime.now().strftime('%Y%m%d%H%M%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + ',' + str(self.Sample3RL) + '\n')
+        success = False
+        attempts = 0
+        while success == False and attempts < 3:
+            try:
+                if self.DataFile.closed == True:
+                    self.DataFile = open(self.DataFileName,'a')
+                self.DataFile.write(str(datetime.now().strftime('%Y/%m/%d')) + ',' + str(datetime.now().strftime('%H:%M:%S')) + ',' + str(htrpc) + ',' + str(self.MCThermoKL) + ',' +str(self.MCThermoRL) + ',' +str(self.Sample1RL) + ',' +str(self.Sample2RL) + ',' + str(self.Sample3RL) + '\n')
+                self.DataFile.close() #Close to prevent errors to be proactive about corruption
+                success = True
+            except IOError:
+                sleep(10)
+                print("**FileIO Error. Is the file currently open in another application? (Attempt " + str(i+1) + " of 3)**")
+                i += 1
+
     def UpdatePlot(self,sample1desc,sample2desc,sample3desc):
         s1plt = self.ax.scatter(self.MCThermoK,self.Sample1R,c='k',s=5,label=sample1desc)
         s2plt = self.ax.scatter(self.MCThermoK,self.Sample2R,c='r',s=5,label=sample2desc)

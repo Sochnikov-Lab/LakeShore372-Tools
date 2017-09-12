@@ -80,8 +80,8 @@ while currentpc > LSHDev.sampleheater["finalpc"]:
         print(":Scanner: MC Thermometer:")
         sleep(1)
         LSHDev.ScanTo(LSHDev.mcthermo)
-        print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]) + "+ seconds")
-        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]+t_safety)
+        print("o  Sleeping for switch/filter settle/0.5*dwell: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"] + LSHDev.mcthermo["t_dwell"]) + " seconds")
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.mcthermo["t_settle"]+0.5*LSHDev.mcthermo["t_dwell"])
         TempProbeR = LSHDev.ReadResistance(LSHDev.mcthermo)
         print("o  Read Resistance: " + str(TempProbeR) +" Ohms")
         sleep(0.25)
@@ -90,45 +90,55 @@ while currentpc > LSHDev.sampleheater["finalpc"]:
         LSHData.AppendMCThermoK(TempProbeT)
         LSHData.AppendMCThermoR(TempProbeR)
         print("o  Appended Data to arrays")
+        print("o  Sleeping for 0.5*dwell: " + str(0.5*LSHDev.mcthermo["t_dwell"]) + " seconds")
+        sleep(0.5*LSHDev.mcthermo["t_dwell"])
+
 
         #Sample 1
         print(":Scanner: Sample1:")
         sleep(1)
         LSHDev.ScanTo(LSHDev.sample1)
-        print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"]) + " seconds")
-        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"]+t_safety)
+        print("o  Sleeping for switch/filter settle/0.5*dwell: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"] + 0.5*LSHDev.sample1["t_dwell"]) + " seconds")
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample1["t_settle"]+0.5*LSHDev.sample1["t_dwell"])
         Sample1R = LSHDev.ReadResistance(LSHDev.sample1)
         print("o  Read Resistance: " + str(Sample1R) + " Ohms")
+
         LSHData.AppendSample1R(Sample1R)
         print("o  Appended Data to arrays")
+        print("o  Sleeping for 0.5*dwell: " + str(0.5*LSHDev.sample1["t_dwell"]) + " seconds")
+        sleep(0.5*LSHDev.sample1["t_dwell"])
 
         #Sample 2
         print(":Scanner: Sample2:")
         sleep(1)
         LSHDev.ScanTo(LSHDev.sample2)
-        print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"]) + " seconds")
-        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"]+t_safety)
+        print("o  Sleeping for switch/filter settle/0.5*dwell: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"] + 0.5*LSHDev.sample2["t_dwell"]) + " seconds")
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample2["t_settle"]+0.5*LSHDev.sample2["t_dwell"])
         Sample2R = LSHDev.ReadResistance(LSHDev.sample2)
         print("o  Read Resistance: " + str(Sample2R) + " Ohms")
         LSHData.AppendSample2R(Sample2R)
         print("o  Appended Data to arrays")
+        print("o  Sleeping for 0.5*dwell: " + str(0.5*LSHDev.sample2["t_dwell"]) + " seconds")
+        sleep(0.5*LSHDev.sample2["t_dwell"])
 
         #Sample 3
         print(":Scanner: Sample3:")
         sleep(1)
         LSHDev.ScanTo(LSHDev.sample3)
-        print("o  Sleeping for switch/filter settle: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.sample3["t_settle"]) + " seconds")
-        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample3["t_settle"]+t_safety)
+        print("o  Sleeping for switch/filter settle/0.5*dwell: " + str(LSHDev.timeConstants["t_switch"] + LSHDev.sample3["t_settle"] + 0.5*LSHDev.sample3["t_dwell"]) + " seconds")
+        sleep(LSHDev.timeConstants["t_switch"] + LSHDev.sample3["t_settle"]+0.5*LSHDev.sample3["t_dwell"])
         Sample3R = LSHDev.ReadResistance(LSHDev.sample3)
         print("o  Read Resistance: " + str(Sample3R) + " Ohms")
         LSHData.AppendSample3R(Sample3R)
         print("o  Appended Data to arrays")
+        print("o  Sleeping for 0.5*dwell: " + str(0.5*LSHDev.sample2["t_dwell"]) + " seconds")
+        sleep(0.5*LSHDev.sample2["t_dwell"])
 
         #Update CSV
-    #    if LSHDataFile.closed:
-    #        LSHDataFile.open(DataFileName,'w')
+        print("o  Attempting to Save CSV")
         LSHData.UpdateCSV(currentpc)
-    #    LSHDataFile.close() #Close to prevent errors to be proactive about corruption
+        print("o  Saved CSV")
+
         LSHData.UpdatePlot(LSHDev.sample1["description"],LSHDev.sample2["description"],LSHDev.sample3["description"])
         print("It should be safe to exit for the next 2 seconds: CTRL-C to exit")
         sleep(2)
