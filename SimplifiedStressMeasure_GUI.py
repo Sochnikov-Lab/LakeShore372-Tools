@@ -16,6 +16,11 @@ class StressMeasure_UI(QMainWindow):
         self.ui = uic.loadUi("LakeShore372SimplifiedStressMeasureGui.ui")
         self.LSHDev = myLS
 
+        self.SetBindings()
+
+    #def BUTTONCLICKEDFUNC(self):
+
+    def SetBindings(self):
         #Bindings:
         #self.BUTTON.clicked.connect(self.BUTTONCLICKEDFUNC)
 
@@ -89,28 +94,16 @@ class StressMeasure_UI(QMainWindow):
         self.ui.taskprogressbar.setValue(0)
         self.ui.totalprogressbar.setValue(0)
         self.ui.CurrentTask.setText("Waiting to Connect to LS372...")
-
-    #def BUTTONCLICKEDFUNC(self):
-
-    #Serial Connection Event Handlers
-    def serialConnect(self):#Evt Handler for serial connect button
-
-        port = self.ui.serialportport.currentText()
-        baud = self.ui.serialportbaud.text()
-        self.LSHDev.open()
-
-    def serialDisconnect(self):
-        return 0
-    def StartMeas(self):
-
+    def SaveToDictionaries(self):
         #Must convert all below to assignments via getText (or whatever gets text)
         #Save Settings to Dictionaries:
         #Serial Related Widgets
-        self.ui.serialportbaud.setText( str(self.LSHDev.serialcfg["baudrate"]))
+        self.LSHDev.serialcfg["serialport"] = self.ui.serialportport.text()
+        self.LSHDev.serialcfg["baudrate"] = self.ui.serialportbaud.text()
         #Settings Widgets
-        self.ui.measurementpasses.setValue( self.LSHDev.scanner["scannerpasses"])
-        self.ui.thermalizationtime.setText( str(self.LSHDev.timeConstants["t_therm"]))
-        self.ui.switchingtime.setText( str(self.LSHDev.timeConstants["t_switch"]))
+        self.LSHDev.scanner["scannerpasses"] = self.ui.measurementpasses.value()
+        self.LSHDev.timeConstants["t_therm"] = self.ui.thermalizationtime.text()
+        self.LSHDev.timeConstants["t_switch"] = self.ui.switchingtime.text()
         #Heater:
         self.ui.htrinit.setText( str(self.LSHDev.sampleheater["initpc"]))
         self.ui.htrfinal.setText( str(self.LSHDev.sampleheater["finalpc"]))
@@ -141,6 +134,18 @@ class StressMeasure_UI(QMainWindow):
         self.ui.sample3dwell.setText( str(self.LSHDev.sample3["t_dwell"]))
         self.ui.sample3pause.setText( str(self.LSHDev.sample3["t_pause"]))
         self.ui.sample3settle.setText( str(self.LSHDev.sample3["t_settle"]))
+    #Serial Connection Event Handlers
+    def serialConnect(self):#Evt Handler for serial connect button
+
+        port = self.ui.serialportport.currentText()
+        baud = self.ui.serialportbaud.text()
+        self.LSHDev.open()
+
+    def serialDisconnect(self):
+        return 0
+    def StartMeas(self):
+
+        self.SaveToDictionaries() #Sets parameters shown in Quick Settings to be used by the routine.
 
         #Then open the connection,
 
