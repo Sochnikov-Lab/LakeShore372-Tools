@@ -42,8 +42,12 @@ MCTInterpListS3 = []
 s1ListADJ = []
 s2ListADJ = []
 s3ListADJ = []
+
+#4th measurement is interpolated badly.
+#4th measurement of each heater val highlighted: 0 1 2 *3* 4 5 6 *7* 8 9 10 *11*
+#                        (i+1)                   1 2 3 *4* 5 6 7 *8*
 for i in range(0,len(MCTInterpList)):
-    if i % 4 != 0:
+    if (i+1) % 4 != 0:
         if s1List[i] != "nan":
             s1ListADJ.append(s1List[i])
             MCTInterpListS1.append(MCTInterpList[i])
