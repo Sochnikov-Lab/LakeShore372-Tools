@@ -53,13 +53,13 @@ i2 = 0
 i3 = 0
 for i in range(0,len(MCTInterpList)):
     if ((i+1) % 12 != 0):
-        if str(s1List[i]) != "nan" and ((i1+1) % 4 != 0):
+        if str(s1List[i]) != "nan":
             s1ListADJ.append(s1List[i])
             MCTInterpListS1.append(MCTInterpList[i])
-        if str(s2List[i]) != "nan" and ((i2+1) % 4 != 0):
+        if str(s2List[i]) != "nan":
             s2ListADJ.append(s2List[i])
             MCTInterpListS2.append(MCTInterpList[i])
-        if str(s3List[i]) != "nan" and ((i3+1) % 4 != 0):
+        if str(s3List[i]) != "nan":
             s3ListADJ.append(s3List[i])
             MCTInterpListS3.append(MCTInterpList[i])
 
