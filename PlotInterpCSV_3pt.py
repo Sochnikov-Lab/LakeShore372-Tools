@@ -1,3 +1,4 @@
+#This tosses out the 4th sample 3 measurement of each heater value. (Due to badly implemented interpolation)
 import sys
 import os
 import numpy as np
@@ -64,9 +65,9 @@ for i in range(0,len(MCTInterpList)):
 
 #fixing:
 for i in range(0,10):
-    print("S1T,S1R = " + str(MCTInterpListS1[i]) + "," + str(s1ListADJ[i]))
+    print(str(i) + ": S1T,S1R = " + str(MCTInterpListS1[i]) + "," + str(s1ListADJ[i]))
     #print("S2T,S2R = " + str(MCTInterpListS2[i]) + "," + str(s2ListADJ[i]))
-    #print("S3T,S3R = " + str(MCTInterpListS3[i]) + "," + str(s3ListADJ[i]))
+    print(str(i) + ": S3T,S3R = " + str(MCTInterpListS3[i]) + "," + str(s3ListADJ[i]))
 
 
 pltfig = plt.figure()
