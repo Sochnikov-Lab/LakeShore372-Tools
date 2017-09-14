@@ -30,7 +30,8 @@
      </font>
     </property>
     <property name="text">
-     <string>Set Settings
+     <string>Connect,
+Set Settings,
  And Start</string>
     </property>
    </widget>
@@ -579,45 +580,28 @@ Also make sure to enable the channels and
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
-      <item row="6" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_24">
         <property name="text">
          <string>Switching Time (s):</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="4" column="1">
        <widget class="QLineEdit" name="thermalizationtime"/>
       </item>
-      <item row="6" column="1">
+      <item row="5" column="1">
        <widget class="QLineEdit" name="switchingtime"/>
       </item>
-      <item row="5" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_23">
         <property name="text">
          <string>Thermalization Time (s):</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="serialportopen">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Open</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="1">
-       <widget class="QPushButton" name="serialportclose">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Close</string>
-        </property>
-       </widget>
+       <widget class="QSpinBox" name="measurementpasses"/>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="serialportport">
@@ -626,6 +610,13 @@ Also make sure to enable the channels and
         </property>
         <property name="currentText">
          <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_16">
+        <property name="text">
+         <string># of Passes/Htr setting:</string>
         </property>
        </widget>
       </item>
@@ -656,16 +647,6 @@ Also make sure to enable the channels and
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QSpinBox" name="measurementpasses"/>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_16">
-        <property name="text">
-         <string># of Passes/Htr setting:</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </widget>
@@ -692,7 +673,7 @@ Also make sure to enable the channels and
      <string>Description to Append to Filename:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="interpolatebutton_2">
+   <widget class="QPushButton" name="saveinibutton">
     <property name="geometry">
      <rect>
       <x>410</x>
