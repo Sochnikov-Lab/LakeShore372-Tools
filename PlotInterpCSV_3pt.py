@@ -44,25 +44,29 @@ s2ListADJ = []
 s3ListADJ = []
 
 #4th measurement is interpolated badly.
-#4th measurement of each heater val highlighted: 0 1 2 *3* 4 5 6 *7* 8 9 10 *11*
-#                        (i+1)                   1 2 3 *4* 5 6 7 *8*
+#4th measurement (i) of each heater val highlighted: 0 1 2 *3* 4 5 6 *7* 8 9 10 *11*
+#                            (i+1)                   1 2 3 *4* 5 6 7 *8*
+#Use (i+1)%4 == 0 to detect bad fourth interpolated measurement
+i1 = 0
+i2 = 0
+i3 = 0
 for i in range(0,len(MCTInterpList)):
-    if (i+1) % 4 != 0:
-        if s1List[i] != "nan":
+    if ((i+1) % 12 != 0):
+        if str(s1List[i]) != "nan" and ((i1+1) % 4 != 0):
             s1ListADJ.append(s1List[i])
             MCTInterpListS1.append(MCTInterpList[i])
-        if s2List[i] != "nan":
+        if str(s2List[i]) != "nan" and ((i2+1) % 4 != 0):
             s2ListADJ.append(s2List[i])
             MCTInterpListS2.append(MCTInterpList[i])
-        if s3List[i] != "nan":
+        if str(s3List[i]) != "nan" and ((i3+1) % 4 != 0):
             s3ListADJ.append(s3List[i])
             MCTInterpListS3.append(MCTInterpList[i])
 
 #fixing:
-for i in range(0,6):
-    print("S1T,S1R = " + MCTInterpListS1[i] + "," + s1List[i])
-    print("S2T,S2R = " + MCTInterpListS2[i] + "," + s1List[i])
-    print("S3T,S3R = " + MCTInterpListS3[i] + "," + s1List[i])
+for i in range(0,10):
+    print("S1T,S1R = " + str(MCTInterpListS1[i]) + "," + str(s1ListADJ[i]))
+    #print("S2T,S2R = " + str(MCTInterpListS2[i]) + "," + str(s2ListADJ[i]))
+    #print("S3T,S3R = " + str(MCTInterpListS3[i]) + "," + str(s3ListADJ[i]))
 
 
 pltfig = plt.figure()
