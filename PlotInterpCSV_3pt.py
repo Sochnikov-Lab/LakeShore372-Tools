@@ -58,6 +58,12 @@ for i in range(0,len(MCTInterpList)):
             s3ListADJ.append(s3List[i])
             MCTInterpListS3.append(MCTInterpList[i])
 
+#fixing:
+for i in range(0,6):
+    print("S1T,S1R = " + MCTInterpListS1[i] + "," + s1List[i])
+    print("S2T,S2R = " + MCTInterpListS2[i] + "," + s1List[i])
+    print("S3T,S3R = " + MCTInterpListS3[i] + "," + s1List[i])
+
 
 pltfig = plt.figure()
 plt.grid() #Turns on gridlines
