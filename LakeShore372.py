@@ -17,6 +17,7 @@ class LakeShore372Device(object):
         self.serIO = io.TextIOWrapper(io.BufferedRWPair(self.ser,self.ser),newline="\r\n")
         self.parser = ConfigParser()
     def getConfig(self,inifilename):
+        self.inifname = inifilename
         self.parser.read(inifilename)
         self.serialcfg = {
             "serialport":str(self.parser.get('connection','serialport')),
