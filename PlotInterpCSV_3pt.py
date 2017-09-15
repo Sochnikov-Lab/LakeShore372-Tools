@@ -1,3 +1,4 @@
+#This tosses out the 4th sample 3 measurement of each heater value. (Due to badly implemented interpolation)
 import sys
 import os
 import numpy as np
@@ -52,22 +53,27 @@ i1 = 0
 i2 = 0
 i3 = 0
 for i in range(0,len(MCTInterpList)):
+<<<<<<< HEAD
     if ((i+1) % nPasses*nChannels != 0):
         if str(s1List[i]) != "nan" and ((i1+1) % 4 != 0):
+=======
+    if ((i+1) % 12 != 0):
+        if str(s1List[i]) != "nan":
+>>>>>>> f8b7dd992ad141545a384d025559b4ffe98a5b7a
             s1ListADJ.append(s1List[i])
             MCTInterpListS1.append(MCTInterpList[i])
-        if str(s2List[i]) != "nan" and ((i2+1) % 4 != 0):
+        if str(s2List[i]) != "nan":
             s2ListADJ.append(s2List[i])
             MCTInterpListS2.append(MCTInterpList[i])
-        if str(s3List[i]) != "nan" and ((i3+1) % 4 != 0):
+        if str(s3List[i]) != "nan":
             s3ListADJ.append(s3List[i])
             MCTInterpListS3.append(MCTInterpList[i])
 
 #fixing:
 for i in range(0,10):
-    print("S1T,S1R = " + str(MCTInterpListS1[i]) + "," + str(s1ListADJ[i]))
+    print(str(i) + ": S1T,S1R = " + str(MCTInterpListS1[i]) + "," + str(s1ListADJ[i]))
     #print("S2T,S2R = " + str(MCTInterpListS2[i]) + "," + str(s2ListADJ[i]))
-    #print("S3T,S3R = " + str(MCTInterpListS3[i]) + "," + str(s3ListADJ[i]))
+    print(str(i) + ": S3T,S3R = " + str(MCTInterpListS3[i]) + "," + str(s3ListADJ[i]))
 
 
 pltfig = plt.figure()
