@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 cfgparser = ConfigParser()
 cfgparser.read("config.ini")
 nChannels = int(cfgparser.get('scanner','channels')) #Number of channels holding samples
+nPasses = int(cfgparser.get('scanner','scannerpasses')) #Number of scanner passes
 
 #CSV header names:
 datehdr = "date"
@@ -36,22 +37,22 @@ s2List = dataframe[s2hdr] #List of resistances for Sample 2
 s3List = dataframe[s3hdr] #List of resistances for Sample 3
 
 #Adjust lists to not include NaN:
-MCTInterpListS1 = []
+MCTInterpListS1 = [] #Interpolated temperatures for each resistance measurement of S1
 MCTInterpListS2 = []
 MCTInterpListS3 = []
-s1ListADJ = []
+s1ListADJ = [] #Resistance measurements of S1, NaNs removed
 s2ListADJ = []
 s3ListADJ = []
 
 #4th measurement is interpolated badly.
 #4th measurement (i) of each heater val highlighted: 0 1 2 *3* 4 5 6 *7* 8 9 10 *11*
 #                            (i+1)                   1 2 3 *4* 5 6 7 *8*
-#Use (i+1)%4 == 0 to detect bad fourth interpolated measurement
+#Use (i+1)%12 == 0 to detect bad fourth interpolated measurement
 i1 = 0
 i2 = 0
 i3 = 0
 for i in range(0,len(MCTInterpList)):
-    if ((i+1) % 12 != 0):
+    if ((i+1) % nPasses*nChannels != 0):
         if str(s1List[i]) != "nan" and ((i1+1) % 4 != 0):
             s1ListADJ.append(s1List[i])
             MCTInterpListS1.append(MCTInterpList[i])
