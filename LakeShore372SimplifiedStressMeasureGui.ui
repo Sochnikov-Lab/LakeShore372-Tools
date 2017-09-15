@@ -64,7 +64,8 @@ Set Settings,
      </rect>
     </property>
     <property name="text">
-     <string>Interpolate CSV File</string>
+     <string>Generate &quot;Average&quot;
+and &quot;Interpolated&quot; CSV Files</string>
     </property>
    </widget>
    <widget class="QPushButton" name="plotbutton">
@@ -686,6 +687,20 @@ Also make sure to enable the channels and
      <string>Save new
 config.ini
 (optional)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="plotbutton_2">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>250</y>
+      <width>221</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Plot from Average
+CSV File (Using PyPlot)</string>
     </property>
    </widget>
   </widget>
