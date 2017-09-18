@@ -53,13 +53,8 @@ i1 = 0
 i2 = 0
 i3 = 0
 for i in range(0,len(MCTInterpList)):
-<<<<<<< HEAD
     if ((i+1) % nPasses*nChannels != 0):
-        if str(s1List[i]) != "nan" and ((i1+1) % 4 != 0):
-=======
-    if ((i+1) % 12 != 0):
         if str(s1List[i]) != "nan":
->>>>>>> f8b7dd992ad141545a384d025559b4ffe98a5b7a
             s1ListADJ.append(s1List[i])
             MCTInterpListS1.append(MCTInterpList[i])
         if str(s2List[i]) != "nan":
